@@ -1,0 +1,38 @@
+<h2>All Articles</h2>
+
+
+  <table class="table table-responsive">
+    <thead class="thead-light">
+    <tr>
+      <th style="width: 550px; text-align: left;"> Title</th>
+      <th style="width: 250px; text-align: left;">Uploaded Date</th>
+      <th style="width: 250px; text-align: left;">Published ?</th>
+      <th style="width: 120px; text-align: left;">Status</th>
+      <th style="width: 200px; text-align: left;">Approve/Reject</th>
+    </tr>
+    </thead>
+
+    <% @articles.each do |article| %>
+        <tbody>
+        <tr>
+
+          <td style="width: 500px;"><%= link_to article.title, article_path(article) %></td>
+          <td style="width: 250px;"><%= article.uploaded_date %></td>
+          <% if article.is_published %>
+              <td style="width: 250px;"><%= 'Yes' %></td>
+          <% else %>
+              <td style="width: 250px;"><%= 'Not Yet' %></td>
+          <% end %>
+          <td style="width: 250px;"><%= article.status %></td>
+          <% if article.status == 'Being Reviewed' %>
+              <td ><%= link_to 'Approve', edit_article_path(:id => article.id, :status => 'Approved'), class: "btn btn-success" , style: "width: 100px;" %>
+              <%= link_to 'Reject', edit_article_path(:id => article.id, :status => 'Rejected'), class: "btn btn-primary" , style: "width: 100px;" %></td>
+          <% elsif article.status == 'Rejected' %>
+              <td ><%= link_to 'Approve', edit_article_path(:id => article.id, :status => 'Approved'), class: "btn btn-success" , style: "width: 100px;" %></td>
+          <% else %>
+              <td ><%= link_to 'Reject', edit_article_path(:id => article.id, :status => 'Rejected'), class: "btn btn-primary" , style: "width: 100px;" %></td>
+          <% end %>
+        </tr>
+        </tbody>
+    <% end %>
+  </table>

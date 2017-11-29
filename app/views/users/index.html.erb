@@ -1,0 +1,117 @@
+<div class="container">
+  <% content_for :head do  %>
+      <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+  <% end  %>
+  <h2>Dashboard</h2>
+
+  <% if current_user.role_id == 1  %>
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">All Users</h3>
+        </div>
+        <table class="table table-striped" >
+          <thead>
+          <tr>
+            <th>Email</th>
+            <th>Registered Date</th>
+            <th>Last signed in</th>
+            <th># Signed In</th>
+            <th>Ban/Unban User</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @users.each do |user| %>
+              <tr>
+                <td style="width: 100px"><%= user.email %></td>
+                <td style="width: 250px"><%= user.created_at %></td>
+                <td style="width: 250px"><%= user.last_sign_in_at %></td>
+                <td style="width: 150px"><%= user.sign_in_count %></td>
+                <td style="width: 150px">
+                  <div class="wrap">
+                    <% if user.id != current_user.id %>
+                        <% if user.role_id == 3 %>
+                            <%=link_to 'UnBan',edit_user_path(user.id, :ban => 0), :class => 'btn btn-primary'  %>
+                        <% elsif user.role_id == 2 %>
+                            <%=link_to 'Ban', edit_user_path(user.id, :ban => 1), :class => 'btn btn-primary'  %>
+                        <% end %>
+                    <% end%>
+                  </div>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Admins</h3>
+        </div>
+        <table class="table table-striped" >
+          <thead>
+          <tr>
+            <th>Email</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @users.each do |user| %>
+              <% if user.role_id == 1 %>
+                  <tr>
+                    <td style="width: 100px"><%= user.email %></td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Recently Registered Users</h3>
+        </div>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+
+            <th>Email</th>
+            <th>Registered Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @users_recent_register.each do |user| %>
+              <tr>
+                <td style="width: 150px"><%= user.email %></td>
+                <td style="width: 100px"><%= user.created_at %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Recently Signed In Users</h3>
+        </div>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Email</th>
+            <th># Signed In</th>
+            <th>Last signed in</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @users_recent_login.each do |user| %>
+              <tr>
+                <td style="width: 150px"><%= user.email %></td>
+                <td style="width: 100px"><%= user.sign_in_count %></td>
+                <td style="width: 100px"><%= user.last_sign_in_at %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+  <% end %>
+  <br>
+</div>

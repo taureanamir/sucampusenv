@@ -1,0 +1,15 @@
+one:
+  id: 1
+  email: "email@hotmail.com"
+  first_name: "Fname"
+  last_name: "Lname"
+  encrypted_password: "$2a$10$ZU0x7nDXA1EKbUAjwKTCwegV/yfddZkvfKWEa9/arb5pBQuy/1oFu"
+  role_id: 1
+
+two:
+  id: 2
+  email: "email2@hotmail.com"
+  encrypted_password: "$2a$10$ZU0x7nDXA1EKbUAjwKTCwegV/yfddZkvfKWEa9/arb5pBQuy/1oFu"
+  first_name: "Fname2"
+  last_name: "Lname2"
+  role_id: 2

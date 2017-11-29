@@ -1,0 +1,22 @@
+<table class="table table-responsive">
+  <thead class="thead-light">
+  <tr>
+    <th style="width: 550px; text-align: left;">Title</th>
+    <th style="width: 250px; text-align: left;">Uploaded Date</th>
+    <th style="width: 250px; text-align: left;">Updated Date</th>
+    <th style="width: 250px; text-align: left;">Status</th>
+  </tr>
+  </thead>
+
+  <% @my_articles.each do |article| %>
+      <tbody>
+      <tr>
+
+        <td style="width: 500px;"><%= article.title %></td>
+        <td style="width: 250px;"><%= article.created_at %></td>
+        <td style="width: 250px;"><%= article.updated_at %></td>
+        <td style="width: 250px;"><%= article.status %></td>
+      </tr>
+      </tbody>
+  <% end %>
+</table>

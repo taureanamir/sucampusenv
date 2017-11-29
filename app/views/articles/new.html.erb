@@ -1,0 +1,12 @@
+<%= form_for @article, :id => 'new_article' do |f| %>
+    <%= f.fields_for :user, current_user do |builder| %>
+        <fieldset>
+          <%= f.label :title %><br />
+          <%= f.text_field :title %> <br/>
+          <%= f.label :content, "Content" %><br />
+          <%= f.text_area :content , id: :content%><br />
+        </fieldset>
+    <% end %>
+
+    <%= f.submit "Submit" %>
+<% end %>

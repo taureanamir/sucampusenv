@@ -1,0 +1,298 @@
+/*
+	Date: Sept 21, 2017
+	This file contains the work done by Web04.
+	This txt file contains the solution of questions 7 through 13 mentioned in the problem set 2.
+*/
+PS2: Notes
+
+Q7: Stock Prices and Dates
+
+CREATE TABLE my_stocks (
+  symbol VARCHAR(20) NOT NULL
+  ,n_shares INT NOT NULL
+  ,date_acquired DATE NOT NULL
+  );
+
+
+https://stackoverflow.com/questions/5233321/how-to-load-data-from-a-text-file-in-a-postgresql-database
+
+copy my_stocks
+FROM '/home/csim/ps2/db/mystock.txt';
+
+SELECT *
+FROM my_stocks;
+
+ symbol | n_shares | date_acquired
+--------+----------+---------------
+ APPL   |      160 | 2017-09-15
+ FB     |      115 | 2016-12-30
+ MSFT   |       70 | 2016-10-25
+ GOOGL  |      700 | 2015-07-17
+ TWTR   |       52 | 2015-04-10
+(5 rows)
+
+Q8:
+part1
+
+CREATE TABLE stock_prices AS
+SELECT symbol
+  ,CURRENT_DATE AS quote_date
+  ,31.415 AS price
+FROM my_stocks;
+
+SELECT *
+FROM stock_prices;
+
+ symbol | quote_date | price  
+--------+------------+--------
+ APPL   | 2017-09-16 | 31.415
+ FB     | 2017-09-16 | 31.415
+ MSFT   | 2017-09-16 | 31.415
+ GOOGL  | 2017-09-16 | 31.415
+ TWTR   | 2017-09-16 | 31.415
+(5 rows)
+
+part2
+Given:
+CREATE TABLE newly_acquired_stocks (
+  symbol VARCHAR(20) NOT NULL
+  ,n_shares INT NOT NULL
+  ,date_acquired DATE NOT NULL
+  );
+
+
+INSERT INTO newly_acquired_stocks (
+  symbol
+  ,n_shares
+  ,date_acquired
+  )
+SELECT symbol
+  ,quote_date
+  ,price
+FROM my_stocks
+WHERE symbol = 'APPL';
+
+INSERT INTO newly_acquired_stocks
+SELECT *
+FROM my_stocks
+WHERE n_shares > 500;
+
+INSERT INTO newly_acquired_stocks
+SELECT *
+FROM my_stocks
+WHERE date_acquired BETWEEN '01/01/2015'
+    AND '05/30/2015';
+
+SELECT *
+FROM newly_acquired_stocks;
+
+ symbol | n_shares | date_acquired
+--------+----------+---------------
+ APPL   |      160 | 2017-09-15
+ GOOGL  |      700 | 2015-07-17
+ TWTR   |       52 | 2015-04-10
+(3 rows)
+
+
+Q#9
+
+SELECT my_stocks.symbol
+  ,n_shares AS number_of_shares
+  ,price AS price_per_share
+  ,price * n_shares AS current_value
+FROM my_stocks
+INNER JOIN stock_prices ON stock_prices.symbol = my_stocks.symbol;
+
+ symbol | number_of_shares | price_per_share | current_value
+--------+------------------+-----------------+---------------
+ APPL   |              160 |             301 |         48160
+ FB     |              115 |             136 |         15640
+ MSFT   |               70 |             314 |         21980
+ GOOGL  |              700 |             376 |        263200
+ TWTR   |               52 |             337 |         17524
+(5 rows)
+
+Q#10
+
+INSERT INTO my_stocks (
+  symbol
+  ,n_shares
+  ,date_acquired
+  )
+VALUES (
+  'NOK'
+  ,5
+  ,CURRENT_DATE
+  );
+
+SELECT *
+FROM my_stocks;
+
+ symbol | n_shares | date_acquired
+--------+----------+---------------
+ APPL   |      160 | 2017-09-15
+ FB     |      115 | 2016-12-30
+ MSFT   |       70 | 2016-10-25
+ GOOGL  |      700 | 2015-07-17
+ TWTR   |       52 | 2015-04-10
+ NOK    |        5 | 2017-09-16
+(6 rows)
+
+SELECT my_stocks.symbol
+  ,n_shares AS number_of_shares
+  ,price AS price_per_share
+  ,price + n_shares AS current_value
+FROM my_stocks
+FULL JOIN stock_prices ON stock_prices.symbol = my_stocks.symbol;
+
+ symbol | number_of_shares | price_per_share | current_value
+--------+------------------+-----------------+---------------
+ APPL   |              160 |          31.415 |       191.415
+ FB     |              115 |          31.415 |       146.415
+ MSFT   |               70 |          31.415 |       101.415
+ GOOGL  |              700 |          31.415 |       731.415
+ TWTR   |               52 |          31.415 |        83.415
+ NOK    |                5 |                 |              
+(6 rows)
+
+
+
+Q#11
+
+CREATE OR REPLACE FUNCTION stock_value(symbol varchar)
+  RETURNS integer AS
+  $$declare
+  output integer := 0;
+  BEGIN
+    for i in 1..length(symbol) loop
+      output := output + ascii(substr(symbol,i,1));
+    END loop;
+    RETURN output;
+  END;
+  $$ LANGUAGE plpgsql;
+ps2_development=# select stock_value('ibm');
+ stock_value
+-------------
+         312
+(1 row)
+
+ps2_development=# select stock_value('IBM');
+ stock_value
+-------------
+         216
+(1 row)
+
+ps2_development=# select * from stock_prices ;
+ symbol | quote_date | price  
+--------+------------+--------
+ APPL   | 2017-09-16 | 31.415
+ FB     | 2017-09-16 | 31.415
+ MSFT   | 2017-09-16 | 31.415
+ GOOGL  | 2017-09-16 | 31.415
+ TWTR   | 2017-09-16 | 31.415
+(5 rows)
+
+ps2_development=# UPDATE stock_prices
+SET price = stock_value(symbol);
+
+UPDATE 5
+ps2_development=# select * from stock_prices ;
+ symbol | quote_date | price
+--------+------------+-------
+ APPL   | 2017-09-16 |   301
+ FB     | 2017-09-16 |   136
+ MSFT   | 2017-09-16 |   314
+ GOOGL  | 2017-09-16 |   376
+ TWTR   | 2017-09-16 |   337
+(5 rows)
+
+CREATE OR REPLACE FUNCTION portfolio_value()
+RETURNS double precision AS $$DECLARE
+   aggregate_value double precision:=0;
+   xyz_row RECORD;
+   cur_rows CURSOR FOR select my_stocks.symbol, n_shares as number_of_shares,
+                   price as price_per_share, price*n_shares as current_value
+                   from my_stocks join stock_prices on stock_prices.symbol = my_stocks.symbol;
+BEGIN
+   OPEN cur_rows;
+   LOOP
+   FETCH  cur_rows INTO xyz_row;
+   IF NOT FOUND THEN
+      EXIT ;
+   END IF;
+aggregate_value := aggregate_value + xyz_row.current_value;  
+END LOOP;  
+return aggregate_value;
+end;
+$$ language plpgsql;
+
+ps2_development=# select portfolio_value();
+ portfolio_value
+-----------------
+          366504
+
+
+
+Q:12
+ps2_development=# select avg(price) from stock_prices ;
+         avg          
+----------------------
+ 292.8000000000000000
+(1 row)
+
+
+insert into my_stocks (symbol, n_shares, date_acquired)  select my_stocks.symbol, n_shares, current_date from my_stocks join stock_prices on my_stocks.symbol = stock_prices.symbol where price > (select avg(price) from stock_prices);
+
+
+ps2_development=# select symbol, sum(n_shares) from my_stocks group by symbol;
+ symbol | sum  
+--------+------
+ NOK    |    5
+ GOOGL  | 1400
+ TWTR   |  104
+ APPL   |  320
+ FB     |  115
+ MSFT   |  140
+(6 rows)
+
+
+s2_development=# select my_stocks.symbol, sum(n_shares) * price as total_value from my_stocks join stock_prices on my_stocks.symbol = stock_prices.symbol  group by my_stocks.symbol, price;
+ symbol | total_value
+--------+-------------
+ TWTR   |       35048
+ APPL   |       96320
+ MSFT   |       43960
+ FB     |       15640
+ GOOGL  |      526400
+(5 rows)
+
+select my_stocks.symbol, sum(n_shares), sum(n_shares) * price as total_value from my_stocks join stock_prices on my_stocks.symbol = stock_prices.symbol  group by my_stocks.symbol, price having price > (select avg(price) from stock_prices);
+ symbol | sum  | total_value
+--------+------+-------------
+ MSFT   |  140 |       43960
+ APPL   |  320 |       96320
+ TWTR   |  104 |       35048
+ GOOGL  | 1400 |      526400
+
+
+
+Q13:
+
+create view stocks_i_like as select my_stocks.symbol, sum(n_shares), sum(n_shares) * price as total_value from my_stocks join stock_prices on my_stocks.symbol = stock_prices.symbol  group by my_stocks.symbol, price having price > (select avg(price) from stock_prices);
+CREATE VIEW
+ps2_development=# select from stocks_i_like ;
+--
+(4 rows)
+
+ps2_development=# select * from stocks_i_like ;
+ symbol | sum  | total_value
+--------+------+-------------
+ MSFT   |  140 |       43960
+ APPL   |  320 |       96320
+ TWTR   |  104 |       35048
+ GOOGL  | 1400 |      526400
+(4 rows)
+
+
+
+

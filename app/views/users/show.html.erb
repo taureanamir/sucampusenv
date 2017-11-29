@@ -1,0 +1,26 @@
+<div class="jumbotron">
+  Welcome  <%= current_user.email %>!!!
+
+  <%= link_to('Edit Profile', edit_user_registration_path, class: "btn btn-success") %>
+  <%= link_to('My Articles', sucampusenv_my_articles_path, class: "btn btn-success") %><br /><br />
+
+  <% if current_user.role_id == 1 %>
+      <p>
+        <%= link_to('Admin Dashboard', rails_admin_path, class: "btn btn-success")%>
+        <%= link_to('User Details', users_path, class: "btn btn-success") %>
+        <%= link_to('Participants List', sucampusenv_participants_list_path, class: "btn btn-success") %>
+        <%= link_to('Add New Event', new_event_path, class: "btn btn-success") %>
+        <%= link_to('Edit Events', events_path, class: "btn btn-success") %>
+        <%= link_to('Approve/Reject Articles', sucampusenv_articles_list_path, class: "btn btn-success") %>
+      </p>
+  <% end %>
+
+  <br>
+  <h2><%= "My Profile" %></h2>
+  <br>
+  <br> <%= "Name: " %> <%= current_user.first_name %> <%= current_user.last_name %>
+  <br> <%= "Degree: " %> <%= current_user.degree %>
+  <br> <%= "Field of Study: " %> <%= current_user.fos %>
+  <br> <%= "Batch: " %> <%= current_user.batch %>
+  <br>
+</div>

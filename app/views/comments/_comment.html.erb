@@ -1,0 +1,13 @@
+<% @comments.each do |cmt| %>
+    <p><b> <%= cmt.user.email %> </b></p>
+    <p> <%= cmt.content %> </p>
+    <% if current_user == cmt.user %>
+      <%= link_to "Delete", [cmt.event, cmt], method: :delete %>
+      <%= link_to "Edit", edit_event_comment_path(cmt.event, cmt) %>
+    <% end %>
+
+<% end %>
+<hr>
+
+<h3> Wanna say something !!! </h3>
+<%= render 'comments/form' %>

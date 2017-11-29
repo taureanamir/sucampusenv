@@ -1,0 +1,6 @@
+<%= form_for([@event, @event.comments.build]) do |f| %>
+    <fieldset>
+      <%= f.text_area :content , id: :content, class:"form-control", id:"exampleFormControlTextarea1", rows:"3"%><br />
+    </fieldset>
+      <%= f.submit "Post",class:"btn btn-success" %>
+<% end %>

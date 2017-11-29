@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: Comment on event1
+  user_id: users(one).id
+  event_id: events(one).id
+
+two:
+  content: Comment on event2
+  user_id: 2
+  event_id: 2

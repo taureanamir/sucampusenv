@@ -1,0 +1,42 @@
+<%- # Search form to check blood availability %>
+<%= form_tag(sucampusenv_participants_list_path, :method => "get", id: "search-form") do %>
+    <%= select_tag :event, options_for_select(Event.all.map {|p| [ p.title ]}.sort,   "Select Event"),
+                   :prompt => "Select Event",:required => true, class:"btn btn-success dropdown-toggle btn-lg"  %>
+    <%= submit_tag "Go", :name => 'list_participants', class: "btn btn-primary" %>
+<% end %>
+<br/>
+
+
+<%= @event %>
+
+<% if @all_participants.present? %>
+
+    <table class="table table-responsive">
+      <thead class="thead-light">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Degree</th>
+        <th>Field of Study</th>
+        <th>Batch</th>
+        <th>Venue</th>
+        <th>Event Date</th>
+      </tr>
+      </thead>
+
+      <% @all_participants.each do |event| %>
+          <tbody>
+          <tr>
+            <td style="width: 300px;"><%= event.first_name %></td>
+            <td style="width: 300px;"><%= event.last_name %></td>
+            <td style="width: 250px;"><%= event.degree %></td>
+            <td style="width: 250px;"><%= event.fos %></td>
+            <td style="width: 250px;"><%= event.batch %></td>
+            <td style="width: 250px;"><%= event.venue %></td>
+            <td style="width: 250px;"><%= event.event_date %></td>
+          </tr>
+          </tbody>
+      <% end %>
+    </table>
+    <br>
+<% end %>

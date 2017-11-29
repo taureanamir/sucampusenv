@@ -1,0 +1,63 @@
+<h2>PS4 Documentation </h2>
+
+<h2>CONTENT:</h2>
+<h1>Potential content available from the site:</h1>
+<br>1. 	AIT Campus and environment related events announcement.
+<br>2.	User registration for Debate Competitions, food fair and other events in AIT organized by SU campus and environment committee.
+<br>3.	Announcing the winners of the competitions
+
+<h2>	Technology:	</h2>
+<br>	The web application will use Ruby on Rails frameworkon top of Apache web server with PostgreSQL as the database.
+<br>	The basic information processing requirements:
+<br>	The user model contains information about users such as email, password, user role and other details.
+<br>	The user authentication is currently being done by the application database, however, we will work to verify
+the users by using AIT LDAP server.
+<br>	The contents will be the information about events and announcements.
+<br>	The User information and contents are stored in one database.
+
+<h2>	SQL Injection Attacks	</h2>
+<br>	Referring to Rails security guide, Rails applications use Object Relational Mapping which to interact with Active
+Record. ORM provide abstraction and safety to avoid manually creating queries but raw SQL queries can raise
+vulnerabilities, but in our project we have no raw SQL code.
+
+<h3>XSS Attacks</h3>
+<br>	The way to avoid XSS vulnerabilities, we will use SSL on the server for securing the sessions.
+<br>	Using sanitize function to filter input and also escap_html can help to encode the HTML into characters that will
+not consider as HTML code.
+<br>	For the future we will use Brakeman for scanning our system.
+<br>	Brakeman is an open source vulnerability scanner specifically designed for Ruby on Rails applications.
+It statically analyzes Rails application code to find security issues at any stage of development.
+
+<h3>Audit the software for sensitive data and password</h3>
+<br>	For user secure authentication , we used devise gem which provides password hashing mechanism.
+<br>	To avoid session hijacking, we will use SSL for online secure connection.
+<br>	Passwords should not be stored in source code or any file accessed by the users.
+<br>	Yes, we investigated the application thoroughly to make sure no password of any kind was pushed to the production version
+
+<h2>	User Data Model	</h2>
+<p> The User model consists of the following fields as of now. But it can be updated as the necessity arises.</p>
+<br>1.	email
+<br>2.	encrypted_password,
+<br>3.  reset_password_token
+<br>4.	reset_password_sent_at
+<br>5.	remember_created_at
+<br>6.	sign_in_count,
+<br>7.  current_sign_in_at
+<br>8.	last_sign_in_at
+<br>9.	current_sign_in_ip
+<br>10.	last_sign_in_ip
+<br>11.	created_at,
+<br>12.  updated_at,
+<br>13.  role_id <i> -- This is a foreign key from the table Roles</i>
+
+
+<h2>	User registration and management page flow.	</h2>
+<%= image_tag "user_mgmt_flow.jpg" %>
+
+<h2>	Referential Integrity	</h2>
+<br>	We have two models- Users and Role, where User has only one Role and a Role belongs to many Users. The role_id in
+the Users table references to the role_id in the Role table.
+<br>	SQL optimization is required when there are complex queries involving multiple tables that take some considerable
+amount of time and resources to process. In such cases queries can be optimized by implementing right indices in the
+tables, creating temporary tables, decomposing fat tables, etc. In our app if we encounter long running queries we’ll
+definitely optimize it.

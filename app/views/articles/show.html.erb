@@ -1,0 +1,7 @@
+<h2><%= @article.title %></h2>
+<p><i>Author: <b><%= @article.user.email %></b></i></p>
+<p><i><%= @article.updated_at %> </i></p>
+
+<p> <%= @article.content %> </p>
+
+<p> <%= link_to "Back", articles_path, class: "btn btn-success" %></p>

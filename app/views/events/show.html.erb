@@ -1,0 +1,37 @@
+<h2><%= @event.title %>
+  <% if user_signed_in? %>
+    <% if current_user.role_id == 1 %>
+        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-success" %>
+        <%= link_to "Delete", @event, method: :delete, class: "btn btn-success",data: {confirm: "Are you sure?"} %></h2>
+    <% end %>
+  <% end %>
+
+  <% if @event.event_date > Date.today %>
+    <%= link_to "Register", new_event_participation_path(@event), class: "btn btn-success" %></h2>
+  <% else %>
+    <p class="btn btn-success">Registrations Over</p></h2>
+  <% end %>
+
+<p> <%= @event.description %> </p>
+
+<br>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 250px; text-align: center;"> Event Date</th>
+      <th style="width: 250px; text-align: center;">Event Time</th>
+      <th style="width: 250px; text-align: center;">Contact</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+        <td style="width: 250px; text-align: center;"><%= @event.event_date %></td>
+        <td style="width: 200px; text-align: center;"><%= @event.event_time %></td>
+        <td style="width: 250px; text-align: center;"><%= @event.contact %></td>
+  </tbody>
+
+</table>
+
+<hr>
+<%= render 'comments/comment' %>

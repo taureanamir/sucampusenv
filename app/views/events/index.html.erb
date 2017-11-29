@@ -1,0 +1,36 @@
+<main role="main" class="container">
+
+  <div class="row row-offcanvas row-offcanvas-right">
+
+    <div class="col-12 col-md-9">
+      <div >
+        <%= month_calendar events: @events do |date, events| %>
+            <div  class="calendar">
+              <%= date.to_s.last(2) %>
+
+              <% events.each do |event| %>
+                  <div>
+                    <%= link_to event.title, event_path(event) %>
+                  </div>
+              <% end %>
+            </div>
+        <% end %>
+      </div>
+      <!--/row-->
+    </div><!--/span-->
+
+    <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+      <div class="list-group">
+        <p class="btn btn-success">Events List</p>
+        <% @events.each do |event| %>
+            <% if event.event_date < Date.today %>
+                <%= link_to event.title , event_path(event), class: "list-group-item active" %>
+            <% else %>
+                <%= link_to event.title , event_path(event), class: "list-group-item " %>
+            <% end %>
+        <% end %>
+      </div>
+    </div><!--/span-->
+  </div><!--/row-->
+
+</main><!--/.container-->

@@ -1,0 +1,14 @@
+Suggestions to Web6:
+
+1. The voting feature for the products is great. But when the number of up-votes and down-votes are equal the #of votes
+is showing zero. We believe it would be better if there was something like #of up-votes and #of down-votes for products.
+
+2. It would be better to add more information to user profile such as name and contact details like cell number, so the
+other users will be able to contact the seller promptly.
+
+Suggestions to Web10:
+1. Regarding the posts, they seem to be in chronological order which is fine as of now. But as the volume of posts grow,
+ the problem will be to find the latest post. So we believe it is a better option to list the posts in reverse
+ chronological order. Also adding paginate will be a good idea
+
+2. The application is working fine, however the look and feel of the app can be improved by adding some styling. :-)

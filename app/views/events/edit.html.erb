@@ -1,0 +1,50 @@
+<h2>Edit Event</h2>
+
+<%= form_for (@event) do |f| %>
+    <fieldset>
+      <%= f.label :title,"Title" %><br />
+      <%= f.text_field :title , autocomplete: "on"%>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :description,"Description" %><br />
+      <%= f.text_area :description,  autofocus: true  %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :event_date,"Event Date" %><br />
+      <%= f.date_field :event_date %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :event_time,"Event Time" %><br />
+      <%= f.text_field :event_time %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :contact,"Contact Number" %><br />
+      <%= f.text_field :contact %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :venue,"Venue" %><br />
+      <%= f.text_field :venue %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :is_publised, "Publish Now" %><br />
+      <%= f.check_box :is_publised  %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :is_completed, "Is Complete" %><br />
+      <%= f.check_box :is_completed  %>
+    </fieldset>
+
+    <div class="actions">
+      <%= f.submit "Update" %>
+    </div>
+<% end %>
+
+
+<%= link_to "Back", :back %>

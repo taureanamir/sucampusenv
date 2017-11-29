@@ -1,0 +1,75 @@
+
+<% if @is_admin == 1 %>
+
+    <h1>Users List</h1>
+    <h3>All Users</h3>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Email</th>
+        <th>Role Id</th>
+        <th>Date Created</th>
+        <th>Last Signed In</th>
+        <th>Sign In Count</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @members.each do |member| %>
+
+          <tr>
+            <td style="width: 250px; text-align: center;"><%= member.email %></td>
+            <td style="width: 100px; text-align: center;"><%= member.role_id %></td>
+            <td style="width: 250px; text-align: center;"><%= member.created_at %></td>
+            <td style="width: 250px; text-align: center;"><%= member.last_sign_in_at %></td>
+            <td style="width: 250px; text-align: center;"><%= member.sign_in_count %></td>
+
+            <% if member.role_id != 1 %>
+                <td style="width: 200px" ; text-align: center;>
+                  <% if member.role_id == 3 %>
+                      <%= link_to 'Release', sucampusenv_edit_path(:id => member.id, :ban => 0) %>
+                  <% else %>
+                      <%= link_to 'Ban', sucampusenv_edit_path(:id => member.id, :ban => 1) %>
+                  <% end %>
+                </td>
+                </tr>
+            <% end %>
+      <% end %>
+
+      </tbody>
+    </table>
+
+    <br>
+    </tbody>
+    </table>
+    <hr>
+    </br>
+    <h3>Recently Registered Users</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Email</th>
+        <th>Date Created</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @members_recent.each do |member| %>
+          <% if member.role_id != 1 %>
+              <tr>
+                <td style="width: 250px"><%= member.email %></td>
+                <td style="width: 250px"><%= member.created_at %></td>
+              </tr>
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
+    <hr>
+    <p># of users that were created in the last 2 weeks</p>
+
+    <%= line_chart User.group_by_day(:created_at, range: 2.weeks.ago.midnight..Time.now).count %>
+
+<% else %>
+    <p>User Dashboard</p>
+<% end %>

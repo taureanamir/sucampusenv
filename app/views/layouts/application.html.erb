@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SU Campus & Environment</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+</head>
+
+
+<body>
+<div class="container">
+
+  <header class="masthead">
+    <h3 class="text-muted"><%= link_to "SU Campus & Environment", sucampusenv_home_path, class: "navbar-brand" %></h3>
+    <% if user_signed_in? %>
+        <%= link_to('My Profile', user_path(current_user.id)) %>
+    <% else %>
+        <%= link_to('Register', new_user_registration_path) %>
+        <!--%= link_to('Login', new_user_session_path) %-->
+    <% end %>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-3">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav text-md-center nav-justified w-100">
+
+          <li class="nav-item active">
+            <%= link_to "Home", sucampusenv_home_path, class: "nav-link" %><span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Events", events_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Articles", articles_path, class: "nav-link" %>
+          </li>
+          <% if @allpages != nil %>
+              <li class="nav-item">
+                <% @allpages.each do |page| %>
+                    <%= link_to page.title, page_path(page), class: "nav-link" %>
+                <% end %>
+              </li>
+          <% end %>
+
+          <li class="nav-item">
+            <% if user_signed_in? %>
+                <%= link_to('Logout', destroy_user_session_path, :method => :delete, class: "nav-link") %>
+            <% else %>
+                <%= link_to('Login', new_user_session_path, class: "nav-link") %>
+
+            <% end %>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main role="main">
+
+    <div class="container-fluid">
+      <% if flash[:error].present? %>
+          <p class='alert alert-danger'><%= flash[:error] %></p>
+      <% end %>
+      <% if flash[:notice].present? %>
+          <p class='alert alert-warning'><%= flash[:notice] %></p>
+      <% end %>
+      <%= yield %>
+    </div>
+
+  </main>
+
+
+  <hr>
+
+  <footer class="container">
+    <p>&copy; Web04 2017</p>
+  </footer>
+</div>
+</body>
+
+</html>

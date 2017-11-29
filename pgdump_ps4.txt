@@ -1,0 +1,1641 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE deploy;
+ALTER ROLE deploy WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+CREATE ROLE jenkins;
+ALTER ROLE jenkins WITH SUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS;
+CREATE ROLE "web-04";
+ALTER ROLE "web-04" WITH SUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+CREATE ROLE web04;
+ALTER ROLE web04 WITH SUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
+
+
+
+
+
+
+--
+-- Database creation
+--
+
+CREATE DATABASE ps2_production WITH TEMPLATE = template0 OWNER = "web-04";
+CREATE DATABASE ps3_development WITH TEMPLATE = template0 OWNER = jenkins;
+CREATE DATABASE ps3_production WITH TEMPLATE = template0 OWNER = deploy;
+CREATE DATABASE ps3_test WITH TEMPLATE = template0 OWNER = jenkins;
+REVOKE ALL ON DATABASE template1 FROM PUBLIC;
+REVOKE ALL ON DATABASE template1 FROM postgres;
+GRANT ALL ON DATABASE template1 TO postgres;
+GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+
+
+\connect postgres
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect ps2_production
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: web-04
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE ar_internal_metadata OWNER TO "web-04";
+
+--
+-- Name: quotations; Type: TABLE; Schema: public; Owner: web-04
+--
+
+CREATE TABLE quotations (
+    id bigint NOT NULL,
+    author_name character varying,
+    category character varying,
+    quote text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE quotations OWNER TO "web-04";
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE; Schema: public; Owner: web-04
+--
+
+CREATE SEQUENCE quotations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE quotations_id_seq OWNER TO "web-04";
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: web-04
+--
+
+ALTER SEQUENCE quotations_id_seq OWNED BY quotations.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: web-04
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO "web-04";
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: web-04
+--
+
+ALTER TABLE ONLY quotations ALTER COLUMN id SET DEFAULT nextval('quotations_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: web-04
+--
+
+COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	production	2017-09-21 11:39:53.71901	2017-09-21 11:39:53.71901
+\.
+
+
+--
+-- Data for Name: quotations; Type: TABLE DATA; Schema: public; Owner: web-04
+--
+
+COPY quotations (id, author_name, category, quote, created_at, updated_at) FROM stdin;
+1	Ted Turner	Others	I feel like those Jewish people in Germany in 1942.	2017-09-21 11:41:25.997367	2017-09-21 11:41:25.997367
+2	Amir	Accomplished	Finally completed PS2.	2017-09-21 11:41:50.079477	2017-09-21 11:41:50.079477
+3	Prof. Phan Minh Dung	Abstract	I want you to proof this equation.	2017-09-17 16:54:11	2017-09-17 16:54:11
+4	f	Abstract	f	2017-09-18 13:52:01	2017-09-18 13:52:01
+5	pdf	Abstract	pdf	2017-09-19 03:50:22	2017-09-19 03:50:22
+6	Kandith	Abstract	This is from Chai website	2017-09-20 13:23:22	2017-09-20 13:23:22
+7	Chaichan Poonperm	Education	I love WAE	2017-09-17 16:48:27	2017-09-17 16:48:27
+8	Prof. Matt	Education	This is done magically.	2017-09-17 16:53:03	2017-09-17 16:53:03
+9	Kandith	Education	Dear CHAI, May I borrow your server to test my Import XML	2017-09-20 16:07:07	2017-09-20 16:07:07
+10	Prof. Guha	Food	Where is my sandwich	2017-09-17 16:49:54	2017-09-17 16:49:54
+11	Manasa	Food	I love Food! 	2017-09-17 16:52:23	2017-09-17 16:52:23
+12	Shiva	God	Every soul is filled with GOD!	2017-09-20 17:19:18	2017-09-20 17:19:18
+13	Harvey Spector 	Inspirational	People wanna lose small. I wanna win Big.	2017-09-20 17:16:57	2017-09-20 17:16:57
+14	rakesh	rakapal	asdfj;lasj;lasjfdsa;lkdfj	2017-09-20 22:14:16	2017-09-20 22:14:16
+15	a;fdsha;	rakkakak	asld;fhlsa;fhds	2017-09-21 09:09:32	2017-09-21 09:09:32
+16	Noori	Test	This is a test quote.	2017-09-21 12:08:04.107952	2017-09-21 12:08:04.107952
+17	Walt Disney	Motivation	The Way Get Started Is To Quit Talking And Begin Doing.	2017-09-22 01:49:58.688472	2017-09-22 01:49:58.688472
+18	Awww	Motivation	I don't wanna go to work!!!!	2017-09-22 15:58:05.477235	2017-09-22 15:58:05.477235
+19	Edward R. Murrow	Education	The newest computer can merely compound, at speed, the oldest problem in the relations between\nhuman beings, and in the end the communicator will be confronted with the old problem, of what\nto say and how to say it.	2017-09-26 09:32:43.341451	2017-09-26 09:32:43.341451
+20	George R.R. Martin	GAME OF THRONES	Laughter is poison to fear.	2017-09-26 09:32:43.406695	2017-09-26 09:32:43.406695
+21	Ned Stark	GAME OF THRONES	The man who passes the sentence should swing the sword.	2017-09-26 09:32:43.421972	2017-09-26 09:32:43.421972
+22	Cersei Lannister	GAME OF THRONES	When you play the game of thrones, you win or you die. There is no middle ground.	2017-09-26 09:32:43.439118	2017-09-26 09:32:43.439118
+23	Lord Varys	GAME OF THRONES	Power resides where men believe it resides. It’s a trick, a shadow on the wall. And a very small man can cast a very large shadow.	2017-09-26 09:32:43.523153	2017-09-26 09:32:43.523153
+24	 George R.R. Martin	GAME OF THRONES	Fear cuts deeper than swords.	2017-09-26 09:32:43.562351	2017-09-26 09:32:43.562351
+25	Hmmmm	GAME OF THRONES	What Ever!!!!	2017-09-26 09:32:43.644031	2017-09-26 09:32:43.644031
+26	Nam	happy	Always Smile :)	2017-09-26 09:32:43.724904	2017-09-26 09:32:43.724904
+27	Anne Slater	Human	A woman needs four animals in her life. A mink in the closet. A jaguar in the garage. A tiger\nin bed. And an ass to pay for it all.	2017-09-26 09:32:43.811352	2017-09-26 09:32:43.811352
+28	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-09-26 09:32:43.893324	2017-09-26 09:32:43.893324
+29	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-09-26 09:32:43.973799	2017-09-26 09:32:43.973799
+30	Test	Test	Test	2017-10-03 08:52:01.341048	2017-10-03 08:52:01.341048
+31	Edward R. Murrow	Education	The newest computer can merely compound, at speed, the oldest problem in the relations between\nhuman beings, and in the end the communicator will be confronted with the old problem, of what\nto say and how to say it.	2017-10-03 08:53:57.412752	2017-10-03 08:53:57.412752
+32	Edward R. Murrow	Education	The newest computer can merely compound, at speed, the oldest problem in the relations between\nhuman beings, and in the end the communicator will be confronted with the old problem, of what\nto say and how to say it.	2017-10-03 08:53:57.453055	2017-10-03 08:53:57.453055
+33	Ned Stark	GAME OF THRONES	The man who passes the sentence should swing the sword.	2017-10-03 08:53:57.4933	2017-10-03 08:53:57.4933
+34	Cersei Lannister	GAME OF THRONES	When you play the game of thrones, you win or you die. There is no middle ground.	2017-10-03 08:53:57.52905	2017-10-03 08:53:57.52905
+35	Lord Varys	GAME OF THRONES	Power resides where men believe it resides. It’s a trick, a shadow on the wall. And a very small man can cast a very large shadow.	2017-10-03 08:53:57.613804	2017-10-03 08:53:57.613804
+36	 George R.R. Martin	GAME OF THRONES	Fear cuts deeper than swords.	2017-10-03 08:53:57.69536	2017-10-03 08:53:57.69536
+37	George R.R. Martin	GAME OF THRONES	Laughter is poison to fear.	2017-10-03 08:53:57.779793	2017-10-03 08:53:57.779793
+38	Hmmmm	GAME OF THRONES	What Ever!!!!	2017-10-03 08:53:57.86342	2017-10-03 08:53:57.86342
+39	George R.R. Martin	GAME OF THRONES	Laughter is poison to fear.	2017-10-03 08:53:57.948344	2017-10-03 08:53:57.948344
+40	Ned Stark	GAME OF THRONES	The man who passes the sentence should swing the sword.	2017-10-03 08:53:58.029697	2017-10-03 08:53:58.029697
+41	Cersei Lannister	GAME OF THRONES	When you play the game of thrones, you win or you die. There is no middle ground.	2017-10-03 08:53:58.112371	2017-10-03 08:53:58.112371
+42	Lord Varys	GAME OF THRONES	Power resides where men believe it resides. It’s a trick, a shadow on the wall. And a very small man can cast a very large shadow.	2017-10-03 08:53:58.196051	2017-10-03 08:53:58.196051
+43	 George R.R. Martin	GAME OF THRONES	Fear cuts deeper than swords.	2017-10-03 08:53:58.278226	2017-10-03 08:53:58.278226
+44	Hmmmm	GAME OF THRONES	What Ever!!!!	2017-10-03 08:53:58.364875	2017-10-03 08:53:58.364875
+45	Nam	happy	Always Smile :)	2017-10-03 08:53:58.446218	2017-10-03 08:53:58.446218
+46	Nam	happy	Always Smile :)	2017-10-03 08:53:58.530327	2017-10-03 08:53:58.530327
+47	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-10-03 08:53:58.614837	2017-10-03 08:53:58.614837
+48	Anne Slater	Human	A woman needs four animals in her life. A mink in the closet. A jaguar in the garage. A tiger\nin bed. And an ass to pay for it all.	2017-10-03 08:53:58.696413	2017-10-03 08:53:58.696413
+49	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-10-03 08:53:58.779935	2017-10-03 08:53:58.779935
+50	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-10-03 08:53:58.863607	2017-10-03 08:53:58.863607
+51	Ted Turner	Human	I feel like those Jewish people in Germany in 1942.	2017-10-03 08:53:58.948062	2017-10-03 08:53:58.948062
+52	Anne Slater	Human	A woman needs four animals in her life. A mink in the closet. A jaguar in the garage. A tiger\nin bed. And an ass to pay for it all.	2017-10-03 08:53:59.028427	2017-10-03 08:53:59.028427
+53	Test	test	test	2017-10-03 08:53:59.110147	2017-10-03 08:53:59.110147
+54	Test	test	test	2017-10-03 08:53:59.196784	2017-10-03 08:53:59.196784
+\.
+
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: web-04
+--
+
+SELECT pg_catalog.setval('quotations_id_seq', 54, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: web-04
+--
+
+COPY schema_migrations (version) FROM stdin;
+20170915130751
+\.
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: web-04
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: quotations_pkey; Type: CONSTRAINT; Schema: public; Owner: web-04
+--
+
+ALTER TABLE ONLY quotations
+    ADD CONSTRAINT quotations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: web-04
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect ps3_development
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE ar_internal_metadata OWNER TO jenkins;
+
+--
+-- Name: quotations; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE quotations (
+    id bigint NOT NULL,
+    author_name character varying,
+    category character varying,
+    quote text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE quotations OWNER TO jenkins;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE; Schema: public; Owner: jenkins
+--
+
+CREATE SEQUENCE quotations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE quotations_id_seq OWNER TO jenkins;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jenkins
+--
+
+ALTER SEQUENCE quotations_id_seq OWNED BY quotations.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO jenkins;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    role_id integer
+);
+
+
+ALTER TABLE users OWNER TO jenkins;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: jenkins
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO jenkins;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jenkins
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY quotations ALTER COLUMN id SET DEFAULT nextval('quotations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	development	2017-10-11 09:41:58.981714	2017-10-11 09:41:58.981714
+\.
+
+
+--
+-- Data for Name: quotations; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY quotations (id, author_name, category, quote, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jenkins
+--
+
+SELECT pg_catalog.setval('quotations_id_seq', 1, false);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY schema_migrations (version) FROM stdin;
+20171011043620
+20171022181925
+20171022174821
+20171022181205
+20171020095337
+20171018144350
+20171020095521
+20171022181921
+20171018163940
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, role_id) FROM stdin;
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jenkins
+--
+
+SELECT pg_catalog.setval('users_id_seq', 1, false);
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: quotations_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY quotations
+    ADD CONSTRAINT quotations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: jenkins
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: jenkins
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect ps3_production
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: deploy
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE ar_internal_metadata OWNER TO deploy;
+
+--
+-- Name: quotations; Type: TABLE; Schema: public; Owner: deploy
+--
+
+CREATE TABLE quotations (
+    id bigint NOT NULL,
+    author_name character varying,
+    category character varying,
+    quote text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE quotations OWNER TO deploy;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE quotations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE quotations_id_seq OWNER TO deploy;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE quotations_id_seq OWNED BY quotations.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: deploy
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO deploy;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: deploy
+--
+
+CREATE TABLE users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    role_id integer
+);
+
+
+ALTER TABLE users OWNER TO deploy;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO deploy;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY quotations ALTER COLUMN id SET DEFAULT nextval('quotations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	production	2017-10-10 13:35:05.23002	2017-10-10 13:35:05.23002
+\.
+
+
+--
+-- Data for Name: quotations; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY quotations (id, author_name, category, quote, created_at, updated_at) FROM stdin;
+1	Carol Burnet	Motivation	Only I can change my life. No one can do it for me.	2017-10-11 06:33:04.573648	2017-10-11 06:33:04.573648
+2				2017-10-11 06:33:10.55404	2017-10-11 06:33:10.55404
+3	Amir	Work hard	Keep doing WAE	2017-10-11 06:33:55.998714	2017-10-11 06:33:55.998714
+4	tinfoil_AEVPB	tinfoil_FvS83	tinfoil_hnU76	2017-10-17 11:06:25.484462	2017-10-17 11:06:25.484462
+5	tinfoil_JweiQ	tinfoil_rxu95	tinfoil_vAK12	2017-10-17 11:06:26.654166	2017-10-17 11:06:26.654166
+6	;tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_RYp12	tinfoil_NyU91	2017-10-17 11:06:27.753652	2017-10-17 11:06:27.753652
+7	tinfoil_dKYBi	tinfoil_sqO96	tinfoil_GFs75	2017-10-17 11:06:28.906146	2017-10-17 11:06:28.906146
+8	tinfoil_MpgbB	tinfoil_otH04	;tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:06:30.020513	2017-10-17 11:06:30.020513
+9	tinfoil_YbcLu	;tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_vXs24	2017-10-17 11:06:31.133597	2017-10-17 11:06:31.133597
+10				2017-10-17 11:06:32.254606	2017-10-17 11:06:32.254606
+11	tinfoil_vCmPI	tinfoil_qDb60	tinfoil_fYm73	2017-10-17 11:06:33.400011	2017-10-17 11:06:33.400011
+12	tinfoil_iEqTd	tinfoil_ECg49	tinfoil_SsQ83	2017-10-17 11:06:34.553805	2017-10-17 11:06:34.553805
+13	tinfoil_vLHrq	tinfoil_HVQ41	tinfoil_EwH40	2017-10-17 11:06:35.705972	2017-10-17 11:06:35.705972
+14	";tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_UQh13	tinfoil_yXu45	2017-10-17 11:06:36.823185	2017-10-17 11:06:36.823185
+15	tinfoil_XFAxY	tinfoil_WrH15	tinfoil_FcH51	2017-10-17 11:06:37.946231	2017-10-17 11:06:37.946231
+16	tinfoil_czjqf	tinfoil_xVX46	";tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:06:39.113593	2017-10-17 11:06:39.113593
+17	tinfoil_OclvS	";tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_dAI96	2017-10-17 11:06:40.227547	2017-10-17 11:06:40.227547
+18	tinfoil_xvHeT	tinfoil_VTH03	tinfoil_kFp62	2017-10-17 11:06:41.364278	2017-10-17 11:06:41.364278
+19	tinfoil_NYnVG	tinfoil_sRb59	tinfoil_rUI13	2017-10-17 11:06:42.467821	2017-10-17 11:06:42.467821
+20	';tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_WVf90	tinfoil_yBK05	2017-10-17 11:06:43.589147	2017-10-17 11:06:43.589147
+21	tinfoil_hXTMJ	tinfoil_YzK36	tinfoil_cVo08	2017-10-17 11:06:44.69195	2017-10-17 11:06:44.69195
+22	tinfoil_baxws	tinfoil_lxM76	';tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:06:45.807314	2017-10-17 11:06:45.807314
+23	tinfoil_EovSM	';tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_utx64	2017-10-17 11:06:46.929398	2017-10-17 11:06:46.929398
+24	tinfoil_AYoFR	tinfoil_BPf79	tinfoil_awl80	2017-10-17 11:06:48.075895	2017-10-17 11:06:48.075895
+25	tinfoil_VOkjJ	tinfoil_UxD78	tinfoil_DjL13	2017-10-17 11:06:49.210936	2017-10-17 11:06:49.210936
+26	);tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_GIX65	tinfoil_GLK68	2017-10-17 11:06:50.329043	2017-10-17 11:06:50.329043
+27	tinfoil_QKsFW	tinfoil_UiV37	tinfoil_ngX75	2017-10-17 11:06:51.451962	2017-10-17 11:06:51.451962
+28	tinfoil_JIUyV	tinfoil_Otw09	);tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:06:52.570922	2017-10-17 11:06:52.570922
+29	tinfoil_GecFK	);tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Xrf02	2017-10-17 11:06:53.732595	2017-10-17 11:06:53.732595
+30	tinfoil_SrCTO	tinfoil_mFt19	tinfoil_kEs05	2017-10-17 11:06:54.870366	2017-10-17 11:06:54.870366
+31	tinfoil_kQqGJ	tinfoil_BsQ15	tinfoil_zNZ72	2017-10-17 11:06:55.997433	2017-10-17 11:06:55.997433
+32	");tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_HpY57	tinfoil_Lok05	2017-10-17 11:06:57.145512	2017-10-17 11:06:57.145512
+33	tinfoil_Zagfb	tinfoil_sbj42	tinfoil_KWa35	2017-10-17 11:06:58.259008	2017-10-17 11:06:58.259008
+34	tinfoil_dZcBO	tinfoil_BQI02	");tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:06:59.402316	2017-10-17 11:06:59.402316
+35	tinfoil_jcown	");tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_lio83	2017-10-17 11:07:00.527942	2017-10-17 11:07:00.527942
+36	tinfoil_WgicK	tinfoil_Yds65	tinfoil_RiT60	2017-10-17 11:07:01.683005	2017-10-17 11:07:01.683005
+37	tinfoil_wBEYK	tinfoil_yfr56	tinfoil_zlH95	2017-10-17 11:07:02.816246	2017-10-17 11:07:02.816246
+38	');tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_ziX83	tinfoil_jLr53	2017-10-17 11:07:03.965332	2017-10-17 11:07:03.965332
+39	tinfoil_ZCNKl	tinfoil_lDO37	tinfoil_JmI36	2017-10-17 11:07:05.098436	2017-10-17 11:07:05.098436
+40	tinfoil_KVwWQ	tinfoil_Arv31	');tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:07:06.229671	2017-10-17 11:07:06.229671
+41	tinfoil_NkSKL	');tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_UxA85	2017-10-17 11:07:07.371408	2017-10-17 11:07:07.371408
+42	tinfoil_dzLeb	tinfoil_Kgl82	tinfoil_UuG86	2017-10-17 11:07:08.566814	2017-10-17 11:07:08.566814
+43	tinfoil_rjTzV	tinfoil_Fml35	tinfoil_pLH07	2017-10-17 11:07:09.716354	2017-10-17 11:07:09.716354
+44	javascript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_zDM34	tinfoil_zhe80	2017-10-17 11:07:10.859937	2017-10-17 11:07:10.859937
+45	tinfoil_FhQeO	tinfoil_MRU36	tinfoil_Ieq26	2017-10-17 11:07:11.979513	2017-10-17 11:07:11.979513
+46	tinfoil_WheiF	tinfoil_mrS98	javascript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:07:13.110426	2017-10-17 11:07:13.110426
+47	tinfoil_KWpTE	javascript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_OSy71	2017-10-17 11:07:14.267271	2017-10-17 11:07:14.267271
+48	tinfoil_djlIn	tinfoil_oza91	tinfoil_IdW26	2017-10-17 11:07:15.447886	2017-10-17 11:07:15.447886
+49	tinfoil_MlJGq	tinfoil_fJE89	tinfoil_uPw46	2017-10-17 11:07:16.629179	2017-10-17 11:07:16.629179
+50	:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_vgD32	tinfoil_xQC79	2017-10-17 11:07:17.753864	2017-10-17 11:07:17.753864
+51	tinfoil_bTFXl	tinfoil_zcp06	tinfoil_IBS30	2017-10-17 11:07:18.893714	2017-10-17 11:07:18.893714
+52	tinfoil_lLAxJ	tinfoil_LJH18	:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:20.061496	2017-10-17 11:07:20.061496
+53	tinfoil_uwOZB	:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_IiR56	2017-10-17 11:07:21.205465	2017-10-17 11:07:21.205465
+54	tinfoil_DudQJ	tinfoil_Don87	tinfoil_ZLP12	2017-10-17 11:07:22.707692	2017-10-17 11:07:22.707692
+55	tinfoil_JNhzu	tinfoil_NMi51	tinfoil_RFy39	2017-10-17 11:07:23.848975	2017-10-17 11:07:23.848975
+56	":tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_DbJ31	tinfoil_nvC23	2017-10-17 11:07:25.011889	2017-10-17 11:07:25.011889
+57	tinfoil_naWRf	tinfoil_GfJ76	tinfoil_Eet08	2017-10-17 11:07:26.133754	2017-10-17 11:07:26.133754
+58	tinfoil_VRxaU	tinfoil_pks03	":tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:27.272607	2017-10-17 11:07:27.272607
+59	tinfoil_WvPaz	":tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_Tme68	2017-10-17 11:07:28.419567	2017-10-17 11:07:28.419567
+60	tinfoil_KnIOq	tinfoil_jpY48	tinfoil_zBq97	2017-10-17 11:07:29.626681	2017-10-17 11:07:29.626681
+61	tinfoil_cDhWd	tinfoil_Sah07	tinfoil_cMl86	2017-10-17 11:07:30.765972	2017-10-17 11:07:30.765972
+62	':tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_AOd14	tinfoil_TIr93	2017-10-17 11:07:31.914747	2017-10-17 11:07:31.914747
+63	tinfoil_vdrbj	tinfoil_QlV83	tinfoil_eVb90	2017-10-17 11:07:33.063833	2017-10-17 11:07:33.063833
+310	tinfoil_kDqGl	tinfoil_ACS78	tinfoil_SrT83	2017-10-17 11:12:46.254049	2017-10-17 11:12:46.254049
+64	tinfoil_INWSk	tinfoil_ATZ34	':tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:34.193394	2017-10-17 11:07:34.193394
+65	tinfoil_pWdbL	':tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_Ryq19	2017-10-17 11:07:35.336436	2017-10-17 11:07:35.336436
+66	tinfoil_adoTD	tinfoil_dac75	tinfoil_gpN27	2017-10-17 11:07:36.502867	2017-10-17 11:07:36.502867
+67	tinfoil_IVazs	tinfoil_TxU28	tinfoil_Hep28	2017-10-17 11:07:37.641698	2017-10-17 11:07:37.641698
+68	):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_hjk70	tinfoil_Ohb58	2017-10-17 11:07:38.798809	2017-10-17 11:07:38.798809
+69	tinfoil_RTjqX	tinfoil_ecn80	tinfoil_ETy50	2017-10-17 11:07:39.983771	2017-10-17 11:07:39.983771
+70	tinfoil_HXbcU	tinfoil_zDj52	):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:41.110182	2017-10-17 11:07:41.110182
+71	tinfoil_kCwME	):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_kAM56	2017-10-17 11:07:42.254472	2017-10-17 11:07:42.254472
+72	tinfoil_xLzSQ	tinfoil_DFe24	tinfoil_xur45	2017-10-17 11:07:43.474322	2017-10-17 11:07:43.474322
+73	tinfoil_eZYbH	tinfoil_MIp94	tinfoil_ZKu38	2017-10-17 11:07:44.637083	2017-10-17 11:07:44.637083
+74	"):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_fJH34	tinfoil_msJ07	2017-10-17 11:07:45.817285	2017-10-17 11:07:45.817285
+75	tinfoil_wcNgo	tinfoil_wFt13	tinfoil_Xic03	2017-10-17 11:07:46.974713	2017-10-17 11:07:46.974713
+76	tinfoil_mIGrW	tinfoil_Tke05	"):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:48.103059	2017-10-17 11:07:48.103059
+77	tinfoil_whrqi	"):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_lWU81	2017-10-17 11:07:49.285041	2017-10-17 11:07:49.285041
+78	tinfoil_ibPJC	tinfoil_IJl13	tinfoil_UbL09	2017-10-17 11:07:50.501915	2017-10-17 11:07:50.501915
+79	tinfoil_HIfpO	tinfoil_EjQ07	tinfoil_oQi26	2017-10-17 11:07:51.696337	2017-10-17 11:07:51.696337
+80	'):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_Ptm85	tinfoil_xud27	2017-10-17 11:07:52.834899	2017-10-17 11:07:52.834899
+81	tinfoil_djVLI	tinfoil_ynG68	tinfoil_adp06	2017-10-17 11:07:54.019914	2017-10-17 11:07:54.019914
+82	tinfoil_Tljwk	tinfoil_ZpS79	'):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:07:55.182817	2017-10-17 11:07:55.182817
+83	tinfoil_ydcZC	'):tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_nzL23	2017-10-17 11:07:56.365378	2017-10-17 11:07:56.365378
+84	tinfoil_MxiqN	tinfoil_lrM75	tinfoil_ubT26	2017-10-17 11:07:57.550206	2017-10-17 11:07:57.550206
+85	tinfoil_VvWox	tinfoil_AOD39	tinfoil_xtC24	2017-10-17 11:07:58.730083	2017-10-17 11:07:58.730083
+86	VBScript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_yQR05	tinfoil_rAB61	2017-10-17 11:07:59.943329	2017-10-17 11:07:59.943329
+87	tinfoil_OPgRe	tinfoil_ITk41	tinfoil_uOk94	2017-10-17 11:08:01.123308	2017-10-17 11:08:01.123308
+88	tinfoil_LSxAm	tinfoil_LJi20	VBScript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	2017-10-17 11:08:02.301491	2017-10-17 11:08:02.301491
+89	tinfoil_nbPAS	VBScript:tinfoil_xss_in_element_attribute=3341b16b2e02679ecb3d3fccb14a5667fa751d0d'	tinfoil_mjd83	2017-10-17 11:08:03.462301	2017-10-17 11:08:03.462301
+90	tinfoil_vyeAZ	tinfoil_EMs10	tinfoil_Gqc21	2017-10-17 11:08:04.687349	2017-10-17 11:08:04.687349
+91	tinfoil_iSNpc	tinfoil_EFT26	tinfoil_wji70	2017-10-17 11:08:05.854166	2017-10-17 11:08:05.854166
+92	tinfoil_JVilk;tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_BaT98	tinfoil_hwJ60	2017-10-17 11:08:07.066168	2017-10-17 11:08:07.066168
+93	tinfoil_IFRte	tinfoil_nRJ01	tinfoil_wSy29	2017-10-17 11:08:08.23359	2017-10-17 11:08:08.23359
+94	tinfoil_zFUaH	tinfoil_DeY80	tinfoil_QFB73;tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	2017-10-17 11:08:10.519175	2017-10-17 11:08:10.519175
+95	tinfoil_SQcXZ	tinfoil_MDP09;tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_ERL65	2017-10-17 11:08:11.701853	2017-10-17 11:08:11.701853
+96	tinfoil_drFDU	tinfoil_hxw48	tinfoil_AlX68	2017-10-17 11:08:12.888631	2017-10-17 11:08:12.888631
+97	tinfoil_WpTwR	tinfoil_DBQ53	tinfoil_yoZ41	2017-10-17 11:08:14.063727	2017-10-17 11:08:14.063727
+98	tinfoil_gFRnP";tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_QhV01	tinfoil_fcN67	2017-10-17 11:08:15.242248	2017-10-17 11:08:15.242248
+99	tinfoil_HYuSr	tinfoil_EFy17	tinfoil_jbc79	2017-10-17 11:08:16.409413	2017-10-17 11:08:16.409413
+100	tinfoil_OCIJy	tinfoil_RIA59	tinfoil_oZT07";tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	2017-10-17 11:08:17.607237	2017-10-17 11:08:17.607237
+101	tinfoil_MEQng	tinfoil_dBl31";tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_kyT17	2017-10-17 11:08:18.763112	2017-10-17 11:08:18.763112
+102	tinfoil_bitch	tinfoil_foK61	tinfoil_fon38	2017-10-17 11:08:19.990915	2017-10-17 11:08:19.990915
+103	tinfoil_Zvobd	tinfoil_xeP93	tinfoil_qUr40	2017-10-17 11:08:21.171173	2017-10-17 11:08:21.171173
+104	tinfoil_FvsDc';tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_RUG81	tinfoil_KJe74	2017-10-17 11:08:22.768341	2017-10-17 11:08:22.768341
+105	tinfoil_GIdDm	tinfoil_UNM54	tinfoil_TZM30	2017-10-17 11:08:23.952364	2017-10-17 11:08:23.952364
+106	tinfoil_pZhOH	tinfoil_jah27	tinfoil_Ngn92';tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	2017-10-17 11:08:25.156046	2017-10-17 11:08:25.156046
+107	tinfoil_KpgCS	tinfoil_iEz67';tinfoil_xss_in_element_event=3341b16b2e02679ecb3d3fccb14a5667fa751d0d//	tinfoil_AhO27	2017-10-17 11:08:26.325822	2017-10-17 11:08:26.325822
+108	tinfoil_FgzxT	tinfoil_xkX41	tinfoil_uez78	2017-10-17 11:08:27.551666	2017-10-17 11:08:27.551666
+109	tinfoil_oJyEc	tinfoil_UFj12	tinfoil_QZJ12	2017-10-17 11:08:28.721757	2017-10-17 11:08:28.721757
+110	tinfoil_BHDFV;tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_RDL29	tinfoil_gwX70	2017-10-17 11:08:29.901406	2017-10-17 11:08:29.901406
+111	tinfoil_gbhMB	tinfoil_NnS79	tinfoil_Xzh90	2017-10-17 11:08:31.084585	2017-10-17 11:08:31.084585
+112	tinfoil_ZesQd	tinfoil_Ymh54	tinfoil_Xsz06;tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:08:32.256536	2017-10-17 11:08:32.256536
+113	tinfoil_PAwpl	tinfoil_elr94;tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_RDr35	2017-10-17 11:08:33.470975	2017-10-17 11:08:33.470975
+114	tinfoil_Dqyxo	tinfoil_Wsf96	tinfoil_GYO87	2017-10-17 11:08:34.735189	2017-10-17 11:08:34.735189
+115	tinfoil_gSuCR	tinfoil_mHl93	tinfoil_lhu24	2017-10-17 11:08:35.914263	2017-10-17 11:08:35.914263
+116	tinfoil_aYsdA';tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_UlY04	tinfoil_BmT83	2017-10-17 11:08:37.098872	2017-10-17 11:08:37.098872
+117	tinfoil_ghNom	tinfoil_riq79	tinfoil_kPE56	2017-10-17 11:08:38.326604	2017-10-17 11:08:38.326604
+118	tinfoil_bxmzE	tinfoil_jWy18	tinfoil_IUD62';tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:08:39.510575	2017-10-17 11:08:39.510575
+119	tinfoil_wvJjr	tinfoil_NhU12';tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_pqv76	2017-10-17 11:08:40.711783	2017-10-17 11:08:40.711783
+120	tinfoil_lxEkG	tinfoil_Qtd94	tinfoil_OUS24	2017-10-17 11:08:41.94944	2017-10-17 11:08:41.94944
+121	tinfoil_hWOwE	tinfoil_Wkx46	tinfoil_SWN32	2017-10-17 11:08:43.121233	2017-10-17 11:08:43.121233
+122	tinfoil_MeOTm";tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_vKr15	tinfoil_FJq47	2017-10-17 11:08:44.312304	2017-10-17 11:08:44.312304
+123	tinfoil_OsVyj	tinfoil_gTa83	tinfoil_wDV80	2017-10-17 11:08:45.487508	2017-10-17 11:08:45.487508
+311	tinfoil_kDqGl	tinfoil_ACS78	tinfoil_SrT83	2017-10-17 11:12:47.572197	2017-10-17 11:12:47.572197
+124	tinfoil_eqvTC	tinfoil_Cdp59	tinfoil_esA64";tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:08:46.668828	2017-10-17 11:08:46.668828
+125	tinfoil_gCfHc	tinfoil_zwa80";tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Xye24	2017-10-17 11:08:47.845655	2017-10-17 11:08:47.845655
+126	tinfoil_grVec	tinfoil_KTP54	tinfoil_ebE43	2017-10-17 11:08:49.099547	2017-10-17 11:08:49.099547
+127	tinfoil_vzElp	tinfoil_OEA40	tinfoil_uVH41	2017-10-17 11:08:50.285014	2017-10-17 11:08:50.285014
+128	tinfoil_shRBG];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_hEt95	tinfoil_moS36	2017-10-17 11:08:51.470952	2017-10-17 11:08:51.470952
+129	tinfoil_YKtFw	tinfoil_MEo57	tinfoil_MuU50	2017-10-17 11:08:52.682855	2017-10-17 11:08:52.682855
+130	tinfoil_YlwcF	tinfoil_aZT10	tinfoil_mMb94];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:08:53.854971	2017-10-17 11:08:53.854971
+131	tinfoil_hESTF	tinfoil_ORQ52];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_MdX35	2017-10-17 11:08:55.042742	2017-10-17 11:08:55.042742
+132	tinfoil_usxkM	tinfoil_Kny39	tinfoil_HnP98	2017-10-17 11:08:56.248242	2017-10-17 11:08:56.248242
+133	tinfoil_zPKuT	tinfoil_dTC85	tinfoil_efv71	2017-10-17 11:08:57.450809	2017-10-17 11:08:57.450809
+134	tinfoil_rBjOJ'];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_JLE74	tinfoil_fJi63	2017-10-17 11:08:58.63674	2017-10-17 11:08:58.63674
+135	tinfoil_PMuLo	tinfoil_Vek81	tinfoil_GrO36	2017-10-17 11:08:59.830547	2017-10-17 11:08:59.830547
+136	tinfoil_SDOtC	tinfoil_cbn42	tinfoil_oZs84'];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:01.074954	2017-10-17 11:09:01.074954
+137	tinfoil_jSLdH	tinfoil_TLi78'];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Bxj61	2017-10-17 11:09:02.314685	2017-10-17 11:09:02.314685
+138	tinfoil_rGZlf	tinfoil_IXg96	tinfoil_zuE02	2017-10-17 11:09:03.55097	2017-10-17 11:09:03.55097
+139	tinfoil_vZoaN	tinfoil_yUu15	tinfoil_kvI54	2017-10-17 11:09:04.755259	2017-10-17 11:09:04.755259
+140	tinfoil_lbTfE"];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_FzT19	tinfoil_iaV56	2017-10-17 11:09:05.979829	2017-10-17 11:09:05.979829
+141	tinfoil_UifvQ	tinfoil_dln93	tinfoil_UWG14	2017-10-17 11:09:07.153595	2017-10-17 11:09:07.153595
+142	tinfoil_oYAct	tinfoil_udQ69	tinfoil_bgP09"];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:08.332002	2017-10-17 11:09:08.332002
+143	tinfoil_KnelB	tinfoil_cha82"];tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_dEF54	2017-10-17 11:09:09.5253	2017-10-17 11:09:09.5253
+144	tinfoil_gecbt	tinfoil_SRs08	tinfoil_TVn07	2017-10-17 11:09:10.772517	2017-10-17 11:09:10.772517
+145	tinfoil_JQkrc	tinfoil_bhC15	tinfoil_KCb75	2017-10-17 11:09:11.984453	2017-10-17 11:09:11.984453
+146	tinfoil_CkbqF};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_IXH98	tinfoil_LzS71	2017-10-17 11:09:13.191448	2017-10-17 11:09:13.191448
+147	tinfoil_AbZze	tinfoil_rxD60	tinfoil_dfe78	2017-10-17 11:09:14.394602	2017-10-17 11:09:14.394602
+148	tinfoil_PufIW	tinfoil_oNt98	tinfoil_ULJ19};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:15.640806	2017-10-17 11:09:15.640806
+149	tinfoil_lUoHa	tinfoil_pmL71};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Zsr52	2017-10-17 11:09:16.852752	2017-10-17 11:09:16.852752
+150	tinfoil_YhXWw	tinfoil_fcw87	tinfoil_LWu13	2017-10-17 11:09:18.101968	2017-10-17 11:09:18.101968
+151	tinfoil_vVtjH	tinfoil_shr53	tinfoil_Csd25	2017-10-17 11:09:19.291901	2017-10-17 11:09:19.291901
+152	tinfoil_ufycx'};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_zJw61	tinfoil_jpg20	2017-10-17 11:09:20.517928	2017-10-17 11:09:20.517928
+153	tinfoil_fqukl	tinfoil_wVc69	tinfoil_ZLG57	2017-10-17 11:09:22.045815	2017-10-17 11:09:22.045815
+154	tinfoil_zDScR	tinfoil_lAK06	tinfoil_nGb72'};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:23.278464	2017-10-17 11:09:23.278464
+155	tinfoil_MGIRf	tinfoil_WUy18'};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_hXt45	2017-10-17 11:09:24.555696	2017-10-17 11:09:24.555696
+156	tinfoil_ZOzmc	tinfoil_wva61	tinfoil_oiZ84	2017-10-17 11:09:25.849612	2017-10-17 11:09:25.849612
+157	tinfoil_iGuxE	tinfoil_rqA82	tinfoil_Sdl06	2017-10-17 11:09:27.098969	2017-10-17 11:09:27.098969
+158	tinfoil_lJvLB"};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_cyN31	tinfoil_cuO16	2017-10-17 11:09:28.373318	2017-10-17 11:09:28.373318
+159	tinfoil_VgUwK	tinfoil_rAV82	tinfoil_Kwe75	2017-10-17 11:09:29.575153	2017-10-17 11:09:29.575153
+160	tinfoil_drgfU	tinfoil_BFR79	tinfoil_BWl61"};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:30.779062	2017-10-17 11:09:30.779062
+161	tinfoil_ZeHId	tinfoil_xnl08"};tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_dbj35	2017-10-17 11:09:31.989192	2017-10-17 11:09:31.989192
+162	tinfoil_uQMvp	tinfoil_Lpm30	tinfoil_aFH63	2017-10-17 11:09:33.2346	2017-10-17 11:09:33.2346
+163	tinfoil_UpFrT	tinfoil_vjI65	tinfoil_Lgl04	2017-10-17 11:09:34.453642	2017-10-17 11:09:34.453642
+164	tinfoil_kIieO+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_ADJ87	tinfoil_mHS10	2017-10-17 11:09:35.66178	2017-10-17 11:09:35.66178
+165	tinfoil_wrqbC	tinfoil_coE23	tinfoil_Iyq30	2017-10-17 11:09:36.886873	2017-10-17 11:09:36.886873
+166	tinfoil_nXNCA	tinfoil_CcS09	tinfoil_pFm35+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:38.152477	2017-10-17 11:09:38.152477
+167	tinfoil_GrFNe	tinfoil_rVb81+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_ZdA82	2017-10-17 11:09:39.487056	2017-10-17 11:09:39.487056
+168	tinfoil_qdcnh	tinfoil_JnN18	tinfoil_Gbq07	2017-10-17 11:09:40.83754	2017-10-17 11:09:40.83754
+169	tinfoil_BRlHi	tinfoil_Ygv29	tinfoil_yFL85	2017-10-17 11:09:42.168988	2017-10-17 11:09:42.168988
+170	tinfoil_iLQxc'+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Dan39	tinfoil_Kkm63	2017-10-17 11:09:43.509334	2017-10-17 11:09:43.509334
+171	tinfoil_eyobp	tinfoil_ZSy43	tinfoil_bUK92	2017-10-17 11:09:44.733265	2017-10-17 11:09:44.733265
+172	tinfoil_JBDim	tinfoil_kTL04	tinfoil_zDQ04'+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:45.947904	2017-10-17 11:09:45.947904
+173	tinfoil_fZVwx	tinfoil_yqN97'+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Pih80	2017-10-17 11:09:47.289938	2017-10-17 11:09:47.289938
+174	tinfoil_nqDFU	tinfoil_IpH23	tinfoil_xYQ43	2017-10-17 11:09:48.718253	2017-10-17 11:09:48.718253
+175	tinfoil_eDsuJ	tinfoil_yTe73	tinfoil_GIM28	2017-10-17 11:09:50.105344	2017-10-17 11:09:50.105344
+176	tinfoil_zZbhu"+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_KJP14	tinfoil_Nvs03	2017-10-17 11:09:51.462341	2017-10-17 11:09:51.462341
+177	tinfoil_ZROjB	tinfoil_kVZ14	tinfoil_FiI96	2017-10-17 11:09:52.747401	2017-10-17 11:09:52.747401
+178	tinfoil_NfvlI	tinfoil_loc34	tinfoil_kjG07"+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:09:53.966755	2017-10-17 11:09:53.966755
+179	tinfoil_JtiNb	tinfoil_IUA45"+tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_Nbg34	2017-10-17 11:09:55.181446	2017-10-17 11:09:55.181446
+180	tinfoil_niOCd	tinfoil_cUy74	tinfoil_kpU95	2017-10-17 11:09:56.447779	2017-10-17 11:09:56.447779
+181	tinfoil_kPSBg	tinfoil_SxC21	tinfoil_LxO16	2017-10-17 11:09:57.661751	2017-10-17 11:09:57.661751
+182	tinfoil_kFQGc,a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_zsd14	tinfoil_jTN25	2017-10-17 11:09:58.880264	2017-10-17 11:09:58.880264
+183	tinfoil_YxpiG	tinfoil_SGX42	tinfoil_GLf65	2017-10-17 11:10:00.144135	2017-10-17 11:10:00.144135
+184	tinfoil_PVysZ	tinfoil_Cqz93	tinfoil_Lov85,a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:10:01.367111	2017-10-17 11:10:01.367111
+185	tinfoil_jXFBV	tinfoil_pfm72,a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_GHi16	2017-10-17 11:10:02.604362	2017-10-17 11:10:02.604362
+186	tinfoil_rnsZN	tinfoil_hij51	tinfoil_tcD91	2017-10-17 11:10:03.907331	2017-10-17 11:10:03.907331
+187	tinfoil_eAnXf	tinfoil_UNB43	tinfoil_bIq86	2017-10-17 11:10:05.162815	2017-10-17 11:10:05.162815
+188	tinfoil_IwEMJ',a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_xBY13	tinfoil_fQC20	2017-10-17 11:10:06.374446	2017-10-17 11:10:06.374446
+189	tinfoil_cFfZy	tinfoil_fRO24	tinfoil_CyD29	2017-10-17 11:10:07.706159	2017-10-17 11:10:07.706159
+190	tinfoil_FeyVs	tinfoil_NiX05	tinfoil_AKJ70',a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:10:08.944717	2017-10-17 11:10:08.944717
+191	tinfoil_mMRPI	tinfoil_hYy62',a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_xUG96	2017-10-17 11:10:10.198625	2017-10-17 11:10:10.198625
+192	tinfoil_eocYX	tinfoil_PIw61	tinfoil_VTp67	2017-10-17 11:10:11.47171	2017-10-17 11:10:11.47171
+193	tinfoil_lRquy	tinfoil_uxv69	tinfoil_jXM21	2017-10-17 11:10:12.672357	2017-10-17 11:10:12.672357
+194	tinfoil_eMUay",a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_JBv15	tinfoil_nQL42	2017-10-17 11:10:13.914288	2017-10-17 11:10:13.914288
+195	tinfoil_jdDRo	tinfoil_QYV65	tinfoil_PoB72	2017-10-17 11:10:15.124713	2017-10-17 11:10:15.124713
+196	tinfoil_jmCYG	tinfoil_QqM62	tinfoil_uoK58",a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:10:16.363117	2017-10-17 11:10:16.363117
+197	tinfoil_WiNKu	tinfoil_kKR57",a=tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_vEP39	2017-10-17 11:10:17.575671	2017-10-17 11:10:17.575671
+198	tinfoil_WhotC	tinfoil_JNs16	tinfoil_FQl47	2017-10-17 11:10:18.847803	2017-10-17 11:10:18.847803
+199	tinfoil_yDTto	tinfoil_lsn19	tinfoil_XfP07	2017-10-17 11:10:20.13775	2017-10-17 11:10:20.13775
+200	tinfoil_MqHgB\r\ntinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_XbO51	tinfoil_Yad41	2017-10-17 11:10:21.392266	2017-10-17 11:10:21.392266
+201	tinfoil_TIGLp	tinfoil_xsO82	tinfoil_hdf52	2017-10-17 11:10:22.939954	2017-10-17 11:10:22.939954
+202	tinfoil_NgdXB	tinfoil_RlV67	tinfoil_IYi09\r\ntinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	2017-10-17 11:10:24.200524	2017-10-17 11:10:24.200524
+203	tinfoil_cquRw	tinfoil_CKZ86\r\ntinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d//1	tinfoil_xkw93	2017-10-17 11:10:25.426053	2017-10-17 11:10:25.426053
+204	tinfoil_tuoaq	tinfoil_WpI65	tinfoil_dzm39	2017-10-17 11:10:26.696932	2017-10-17 11:10:26.696932
+205	tinfoil_kTZMw	tinfoil_nah23	tinfoil_gpi12	2017-10-17 11:10:27.959471	2017-10-17 11:10:27.959471
+206	tinfoil_rxGZM*/tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/*	tinfoil_oeV30	tinfoil_aly02	2017-10-17 11:10:29.183035	2017-10-17 11:10:29.183035
+207	tinfoil_MvWwx	tinfoil_nBb58	tinfoil_iTv04	2017-10-17 11:10:30.404155	2017-10-17 11:10:30.404155
+208	tinfoil_ZOtfV	tinfoil_NHK30	tinfoil_hNM61*/tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/*	2017-10-17 11:10:31.610037	2017-10-17 11:10:31.610037
+209	tinfoil_cOClp	tinfoil_etT64*/tinfoil_xss_in_script_tag_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/*	tinfoil_nXE02	2017-10-17 11:10:32.849011	2017-10-17 11:10:32.849011
+210	tinfoil_ZISBX	tinfoil_ygh93	tinfoil_swu71	2017-10-17 11:10:34.104673	2017-10-17 11:10:34.104673
+211	tinfoil_yvLiV	tinfoil_pZO18	tinfoil_Nem21	2017-10-17 11:10:35.325066	2017-10-17 11:10:35.325066
+212	tinfoil_MEocJ tinfoil_xss_in_tag=3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_kyv25	tinfoil_PbJ07	2017-10-17 11:10:36.55516	2017-10-17 11:10:36.55516
+213	tinfoil_TAMHC	tinfoil_PBx63	tinfoil_BUu04	2017-10-17 11:10:37.788567	2017-10-17 11:10:37.788567
+214	tinfoil_BlSHG	tinfoil_Cef29	tinfoil_yIj50 tinfoil_xss_in_tag=3341b16b2e02679ecb3d3fccb14a5667fa751d0d	2017-10-17 11:10:39.036436	2017-10-17 11:10:39.036436
+215	tinfoil_ugaWy	tinfoil_LeN17 tinfoil_xss_in_tag=3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_BGC70	2017-10-17 11:10:40.231747	2017-10-17 11:10:40.231747
+216	tinfoil_OYdHE	tinfoil_rkw06	tinfoil_FmB71	2017-10-17 11:10:41.466959	2017-10-17 11:10:41.466959
+217	tinfoil_sHqER	tinfoil_Tsj18	tinfoil_ADP90	2017-10-17 11:10:42.703196	2017-10-17 11:10:42.703196
+218	tinfoil_kVbrh" tinfoil_xss_in_tag="3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_GXW32	tinfoil_rZF21	2017-10-17 11:10:44.011984	2017-10-17 11:10:44.011984
+219	tinfoil_GvyeA	tinfoil_zai13	tinfoil_fkX17	2017-10-17 11:10:45.302541	2017-10-17 11:10:45.302541
+220	tinfoil_VmuEG	tinfoil_Cot73	tinfoil_Htp46" tinfoil_xss_in_tag="3341b16b2e02679ecb3d3fccb14a5667fa751d0d	2017-10-17 11:10:46.538775	2017-10-17 11:10:46.538775
+221	tinfoil_IRyfh	tinfoil_vgl38" tinfoil_xss_in_tag="3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_zhF90	2017-10-17 11:10:47.789906	2017-10-17 11:10:47.789906
+222	tinfoil_YRSjX	tinfoil_rkw12	tinfoil_jZK82	2017-10-17 11:10:49.050792	2017-10-17 11:10:49.050792
+223	tinfoil_EIqyv	tinfoil_eNf53	tinfoil_KPH36	2017-10-17 11:10:50.300907	2017-10-17 11:10:50.300907
+224	tinfoil_pcrLZ' tinfoil_xss_in_tag='3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_zSQ28	tinfoil_xpP73	2017-10-17 11:10:51.547218	2017-10-17 11:10:51.547218
+225	tinfoil_NIXpT	tinfoil_cpQ06	tinfoil_qhY45	2017-10-17 11:10:52.784038	2017-10-17 11:10:52.784038
+226	tinfoil_abjGB	tinfoil_SAc04	tinfoil_kKT15' tinfoil_xss_in_tag='3341b16b2e02679ecb3d3fccb14a5667fa751d0d	2017-10-17 11:10:54.025627	2017-10-17 11:10:54.025627
+227	tinfoil_AaeTn	tinfoil_tTj94' tinfoil_xss_in_tag='3341b16b2e02679ecb3d3fccb14a5667fa751d0d	tinfoil_nJA35	2017-10-17 11:10:55.258938	2017-10-17 11:10:55.258938
+228	tinfoil_xPYIq	tinfoil_vFR16	tinfoil_ViD71	2017-10-17 11:10:56.564525	2017-10-17 11:10:56.564525
+229	tinfoil_WdPci	tinfoil_JKG78	tinfoil_rBj87	2017-10-17 11:10:57.816705	2017-10-17 11:10:57.816705
+230	tinfoil_NCuri<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_Vip02	tinfoil_unD91	2017-10-17 11:10:59.076335	2017-10-17 11:10:59.076335
+231	tinfoil_ZwhmQ	tinfoil_iKp42	tinfoil_HCQ01	2017-10-17 11:11:00.32384	2017-10-17 11:11:00.32384
+232	tinfoil_ZaTwe	tinfoil_kjJ63	tinfoil_vpC92<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:01.562682	2017-10-17 11:11:01.562682
+233	tinfoil_pEVTb	tinfoil_ArK30<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_zdr52	2017-10-17 11:11:02.825684	2017-10-17 11:11:02.825684
+234	tinfoil_CVPDg	tinfoil_FLd03	tinfoil_pVR42	2017-10-17 11:11:04.16499	2017-10-17 11:11:04.16499
+235	tinfoil_ZEwpx	tinfoil_JCB47	tinfoil_vmZ97	2017-10-17 11:11:05.461168	2017-10-17 11:11:05.461168
+236	tinfoil_SsiEo'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_NjU37	tinfoil_STs98	2017-10-17 11:11:06.7172	2017-10-17 11:11:06.7172
+237	tinfoil_SXFoE	tinfoil_YvI42	tinfoil_VbE51	2017-10-17 11:11:07.980304	2017-10-17 11:11:07.980304
+238	tinfoil_ckDoP	tinfoil_Aiq90	tinfoil_xPE18'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:09.263006	2017-10-17 11:11:09.263006
+239	tinfoil_EWloc	tinfoil_hsE39'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_azj07	2017-10-17 11:11:10.52996	2017-10-17 11:11:10.52996
+240	tinfoil_gANYT	tinfoil_NOx15	tinfoil_XZh17	2017-10-17 11:11:11.820246	2017-10-17 11:11:11.820246
+241	tinfoil_lHOUJ	tinfoil_CpJ25	tinfoil_wYy91	2017-10-17 11:11:13.071266	2017-10-17 11:11:13.071266
+242	tinfoil_OqYcC()"&%1'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>'	tinfoil_vAJ25	tinfoil_JQP40	2017-10-17 11:11:14.361385	2017-10-17 11:11:14.361385
+243	tinfoil_YVSpP	tinfoil_Ubs04	tinfoil_VEv25	2017-10-17 11:11:15.638393	2017-10-17 11:11:15.638393
+244	tinfoil_ywhSf	tinfoil_jVG08	tinfoil_fVm18()"&%1'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>'	2017-10-17 11:11:16.884671	2017-10-17 11:11:16.884671
+312	tinfoil_kDqGl	tinfoil_ACS78	tinfoil_SrT83	2017-10-17 11:12:48.865509	2017-10-17 11:12:48.865509
+245	tinfoil_SObCU	tinfoil_mcD68()"&%1'-;<tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>'	tinfoil_XYG51	2017-10-17 11:11:18.164362	2017-10-17 11:11:18.164362
+246	tinfoil_vfThP	tinfoil_dyH03	tinfoil_dXq08	2017-10-17 11:11:19.476379	2017-10-17 11:11:19.476379
+247	tinfoil_HbKVh	tinfoil_SKg36	tinfoil_KUQ56	2017-10-17 11:11:20.726413	2017-10-17 11:11:20.726413
+248	tinfoil_Mzulf--> <tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/> <!--	tinfoil_oBM35	tinfoil_BfM58	2017-10-17 11:11:22.352542	2017-10-17 11:11:22.352542
+249	tinfoil_rNfhC	tinfoil_EXB36	tinfoil_zPk56	2017-10-17 11:11:23.714685	2017-10-17 11:11:23.714685
+250	tinfoil_askZG	tinfoil_hvG29	tinfoil_YvN80--> <tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/> <!--	2017-10-17 11:11:25.014764	2017-10-17 11:11:25.014764
+251	tinfoil_CXMOo	tinfoil_bpY27--> <tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/> <!--	tinfoil_OZI36	2017-10-17 11:11:26.248547	2017-10-17 11:11:26.248547
+252	tinfoil_dvufF	tinfoil_mqc07	tinfoil_ivQ09	2017-10-17 11:11:27.554	2017-10-17 11:11:27.554
+253	tinfoil_Bfuqs	tinfoil_NqQ97	tinfoil_YLd13	2017-10-17 11:11:28.799803	2017-10-17 11:11:28.799803
+254	tinfoil_fgAzt</title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_eMn43	tinfoil_fAc80	2017-10-17 11:11:30.10678	2017-10-17 11:11:30.10678
+255	tinfoil_rxHKJ	tinfoil_GaU78	tinfoil_kfT38	2017-10-17 11:11:31.398551	2017-10-17 11:11:31.398551
+256	tinfoil_iCUEO	tinfoil_DdX26	tinfoil_hkG98</title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:32.696071	2017-10-17 11:11:32.696071
+257	tinfoil_HFNpI	tinfoil_Vac37</title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_NmI35	2017-10-17 11:11:33.96299	2017-10-17 11:11:33.96299
+258	tinfoil_QnNxZ	tinfoil_ylN98	tinfoil_xaW59	2017-10-17 11:11:35.290322	2017-10-17 11:11:35.290322
+259	tinfoil_cMRli	tinfoil_nIl15	tinfoil_dIN60	2017-10-17 11:11:36.577181	2017-10-17 11:11:36.577181
+260	tinfoil_TLYRH</script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_hRU27	tinfoil_ydl25	2017-10-17 11:11:37.839293	2017-10-17 11:11:37.839293
+261	tinfoil_JITHb	tinfoil_dIa43	tinfoil_tWH15	2017-10-17 11:11:39.142077	2017-10-17 11:11:39.142077
+262	tinfoil_HFdkv	tinfoil_Edq29	tinfoil_LRk34</script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:40.497404	2017-10-17 11:11:40.497404
+263	tinfoil_QEdpD	tinfoil_Mlo80</script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_ynP30	2017-10-17 11:11:41.776322	2017-10-17 11:11:41.776322
+264	tinfoil_TsHNS	tinfoil_bqJ19	tinfoil_JID01	2017-10-17 11:11:43.149664	2017-10-17 11:11:43.149664
+265	tinfoil_UuTkt	tinfoil_WXb14	tinfoil_ivn81	2017-10-17 11:11:44.459908	2017-10-17 11:11:44.459908
+266	tinfoil_TIKwN</textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_xeO97	tinfoil_pYo26	2017-10-17 11:11:45.760405	2017-10-17 11:11:45.760405
+267	tinfoil_JCqZG	tinfoil_EHM13	tinfoil_eGZ16	2017-10-17 11:11:47.041677	2017-10-17 11:11:47.041677
+268	tinfoil_Iofgi	tinfoil_wGB98	tinfoil_Oib21</textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:48.327524	2017-10-17 11:11:48.327524
+269	tinfoil_EpwVf	tinfoil_BJt07</textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_COB57	2017-10-17 11:11:49.605877	2017-10-17 11:11:49.605877
+270	tinfoil_bwnTN	tinfoil_VCs52	tinfoil_SiE35	2017-10-17 11:11:50.943617	2017-10-17 11:11:50.943617
+271	tinfoil_kjGKO	tinfoil_dKr23	tinfoil_TvU65	2017-10-17 11:11:52.214831	2017-10-17 11:11:52.214831
+272	tinfoil_NMSQC'"><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_Gqa08	tinfoil_toM85	2017-10-17 11:11:53.483195	2017-10-17 11:11:53.483195
+273	tinfoil_VTRIk	tinfoil_iWP48	tinfoil_aAV24	2017-10-17 11:11:54.768825	2017-10-17 11:11:54.768825
+274	tinfoil_NtMAl	tinfoil_AFh13	tinfoil_IhQ42'"><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:11:56.188424	2017-10-17 11:11:56.188424
+275	tinfoil_eAyNI	tinfoil_BCh80'"><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_ytl71	2017-10-17 11:11:57.45214	2017-10-17 11:11:57.45214
+276	tinfoil_pVBax	tinfoil_dZl18	tinfoil_bOu45	2017-10-17 11:11:58.758182	2017-10-17 11:11:58.758182
+277	tinfoil_YZeCR	tinfoil_uHx35	tinfoil_ODo96	2017-10-17 11:12:00.017493	2017-10-17 11:12:00.017493
+278	tinfoil_HIcBK'"></title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_GpU12	tinfoil_BDM28	2017-10-17 11:12:01.310583	2017-10-17 11:12:01.310583
+279	tinfoil_jlmgQ	tinfoil_ibM65	tinfoil_ThN75	2017-10-17 11:12:02.59863	2017-10-17 11:12:02.59863
+280	tinfoil_GkNTh	tinfoil_Aqg89	tinfoil_gIf04'"></title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:12:03.931601	2017-10-17 11:12:03.931601
+281	tinfoil_omaOb	tinfoil_Lax43'"></title><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_gWw79	2017-10-17 11:12:05.221306	2017-10-17 11:12:05.221306
+282	tinfoil_CjcAT	tinfoil_rJn05	tinfoil_wJf26	2017-10-17 11:12:06.603371	2017-10-17 11:12:06.603371
+283	tinfoil_FDUpc	tinfoil_KaH95	tinfoil_GVF63	2017-10-17 11:12:07.881242	2017-10-17 11:12:07.881242
+284	tinfoil_pqmnG'"></script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_mhL62	tinfoil_SBP58	2017-10-17 11:12:09.169037	2017-10-17 11:12:09.169037
+285	tinfoil_PQiuH	tinfoil_tKU68	tinfoil_ZjY58	2017-10-17 11:12:10.486037	2017-10-17 11:12:10.486037
+286	tinfoil_uBLsV	tinfoil_sLJ95	tinfoil_QAL53'"></script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:12:11.889476	2017-10-17 11:12:11.889476
+287	tinfoil_EZtlu	tinfoil_CXr78'"></script><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_Xhv26	2017-10-17 11:12:13.17809	2017-10-17 11:12:13.17809
+288	tinfoil_wgliH	tinfoil_Ahp39	tinfoil_qch23	2017-10-17 11:12:14.516805	2017-10-17 11:12:14.516805
+289	tinfoil_QKbkZ	tinfoil_LEe52	tinfoil_Sab67	2017-10-17 11:12:15.798445	2017-10-17 11:12:15.798445
+290	tinfoil_xheHK'"></textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_Oni91	tinfoil_YGE04	2017-10-17 11:12:17.119308	2017-10-17 11:12:17.119308
+291	tinfoil_pBuFm	tinfoil_Vfv79	tinfoil_jPH24	2017-10-17 11:12:18.390038	2017-10-17 11:12:18.390038
+292	tinfoil_zZERV	tinfoil_lXb62	tinfoil_YcS59'"></textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	2017-10-17 11:12:19.703729	2017-10-17 11:12:19.703729
+293	tinfoil_zYvSw	tinfoil_vJg71'"></textarea><tinfoil_xss_3341b16b2e02679ecb3d3fccb14a5667fa751d0d/>	tinfoil_VHU43	2017-10-17 11:12:21.003381	2017-10-17 11:12:21.003381
+294	tinfoil_YpkAn	tinfoil_Jke32	tinfoil_fvP57	2017-10-17 11:12:22.735459	2017-10-17 11:12:22.735459
+295	tinfoil_ZgNJt	tinfoil_JHo90	tinfoil_SXF96	2017-10-17 11:12:24.022715	2017-10-17 11:12:24.022715
+296	//www.tinfoil-fake-site.com	tinfoil_nlW50	tinfoil_UER12	2017-10-17 11:12:25.323675	2017-10-17 11:12:25.323675
+297	tinfoil_AUQoO	tinfoil_Nqk72	tinfoil_bRT25	2017-10-17 11:12:26.628739	2017-10-17 11:12:26.628739
+298	tinfoil_sPVcf	tinfoil_nKW23	//www.tinfoil-fake-site.com	2017-10-17 11:12:27.947358	2017-10-17 11:12:27.947358
+299	tinfoil_zexMg	//www.tinfoil-fake-site.com	tinfoil_uir54	2017-10-17 11:12:29.281116	2017-10-17 11:12:29.281116
+300	tinfoil_hNDmb	tinfoil_zhn65	tinfoil_veC97	2017-10-17 11:12:30.68347	2017-10-17 11:12:30.68347
+301	tinfoil_hNDmb	tinfoil_zhn65	tinfoil_veC97	2017-10-17 11:12:31.973837	2017-10-17 11:12:31.973837
+302	tinfoil_hNDmb	tinfoil_zhn65	tinfoil_veC97	2017-10-17 11:12:33.244177	2017-10-17 11:12:33.244177
+303	tinfoil_hNDmb	tinfoil_zhn65	tinfoil_veC97	2017-10-17 11:12:34.545091	2017-10-17 11:12:34.545091
+304	tinfoil_AZFJK	tinfoil_hjP05	tinfoil_HIX05	2017-10-17 11:12:35.828069	2017-10-17 11:12:35.828069
+305	tinfoil_AZFJK	tinfoil_hjP05	tinfoil_HIX05	2017-10-17 11:12:37.127846	2017-10-17 11:12:37.127846
+306	tinfoil_AZFJK	tinfoil_hjP05	tinfoil_HIX05	2017-10-17 11:12:38.427833	2017-10-17 11:12:38.427833
+307	tinfoil_AZFJK	tinfoil_hjP05	tinfoil_HIX05	2017-10-17 11:12:39.67715	2017-10-17 11:12:39.67715
+308	www.tinfoil-fake-site.com	tinfoil_tQV69	tinfoil_PwT28	2017-10-17 11:12:40.955447	2017-10-17 11:12:40.955447
+309	tinfoil_ArGXkwww.tinfoil-fake-site.com	tinfoil_tQV69	tinfoil_PwT28	2017-10-17 11:12:42.300167	2017-10-17 11:12:42.300167
+313	tinfoil_kDqGl	tinfoil_ACS78	tinfoil_SrT83	2017-10-17 11:12:50.161986	2017-10-17 11:12:50.161986
+314	tinfoil_PCvSs	tinfoil_BOT46	www.tinfoil-fake-site.com	2017-10-17 11:12:51.475506	2017-10-17 11:12:51.475506
+315	tinfoil_PCvSs	tinfoil_BOT46	tinfoil_ryf53www.tinfoil-fake-site.com	2017-10-17 11:12:52.841803	2017-10-17 11:12:52.841803
+316	tinfoil_sUuGK	www.tinfoil-fake-site.com	tinfoil_iIO39	2017-10-17 11:12:56.681915	2017-10-17 11:12:56.681915
+317	tinfoil_sUuGK	tinfoil_JNY03www.tinfoil-fake-site.com	tinfoil_iIO39	2017-10-17 11:12:57.988111	2017-10-17 11:12:57.988111
+318	tinfoil_LADQG	tinfoil_kTu05	tinfoil_Syx91	2017-10-17 11:13:01.842274	2017-10-17 11:13:01.842274
+319	tinfoil_LADQG	tinfoil_kTu05	tinfoil_Syx91	2017-10-17 11:13:03.143856	2017-10-17 11:13:03.143856
+320	tinfoil_LADQG	tinfoil_kTu05	tinfoil_Syx91	2017-10-17 11:13:04.575157	2017-10-17 11:13:04.575157
+321	tinfoil_LADQG	tinfoil_kTu05	tinfoil_Syx91	2017-10-17 11:13:05.875026	2017-10-17 11:13:05.875026
+322	tinfoil_yajMV	tinfoil_fmT67	tinfoil_kzT41	2017-10-17 11:13:07.170287	2017-10-17 11:13:07.170287
+323	tinfoil_yajMV	tinfoil_fmT67	tinfoil_kzT41	2017-10-17 11:13:08.455712	2017-10-17 11:13:08.455712
+324	tinfoil_yajMV	tinfoil_fmT67	tinfoil_kzT41	2017-10-17 11:13:09.781717	2017-10-17 11:13:09.781717
+325	tinfoil_yajMV	tinfoil_fmT67	tinfoil_kzT41	2017-10-17 11:13:11.097046	2017-10-17 11:13:11.097046
+326	https://www.tinfoil-fake-site.com	tinfoil_nNa13	tinfoil_POm53	2017-10-17 11:13:12.383806	2017-10-17 11:13:12.383806
+327	tinfoil_wtykahttps://www.tinfoil-fake-site.com	tinfoil_nNa13	tinfoil_POm53	2017-10-17 11:13:13.682034	2017-10-17 11:13:13.682034
+328	tinfoil_ArKSB	tinfoil_NYI52	tinfoil_MBN95	2017-10-17 11:13:17.63672	2017-10-17 11:13:17.63672
+329	tinfoil_ArKSB	tinfoil_NYI52	tinfoil_MBN95	2017-10-17 11:13:18.937325	2017-10-17 11:13:18.937325
+330	tinfoil_ArKSB	tinfoil_NYI52	tinfoil_MBN95	2017-10-17 11:13:20.282336	2017-10-17 11:13:20.282336
+331	tinfoil_ArKSB	tinfoil_NYI52	tinfoil_MBN95	2017-10-17 11:13:21.961827	2017-10-17 11:13:21.961827
+332	tinfoil_gvFcb	tinfoil_iXH40	https://www.tinfoil-fake-site.com	2017-10-17 11:13:23.280397	2017-10-17 11:13:23.280397
+333	tinfoil_gvFcb	tinfoil_iXH40	tinfoil_Jea72https://www.tinfoil-fake-site.com	2017-10-17 11:13:24.60583	2017-10-17 11:13:24.60583
+334	tinfoil_efVoZ	https://www.tinfoil-fake-site.com	tinfoil_CAt12	2017-10-17 11:13:28.537738	2017-10-17 11:13:28.537738
+335	tinfoil_efVoZ	tinfoil_lzS97https://www.tinfoil-fake-site.com	tinfoil_CAt12	2017-10-17 11:13:29.850175	2017-10-17 11:13:29.850175
+336	tinfoil_yXUin	tinfoil_mCJ05	tinfoil_ltD14	2017-10-17 11:13:33.780348	2017-10-17 11:13:33.780348
+337	tinfoil_yXUin	tinfoil_mCJ05	tinfoil_ltD14	2017-10-17 11:13:35.134376	2017-10-17 11:13:35.134376
+338	tinfoil_yXUin	tinfoil_mCJ05	tinfoil_ltD14	2017-10-17 11:13:36.518915	2017-10-17 11:13:36.518915
+339	tinfoil_yXUin	tinfoil_mCJ05	tinfoil_ltD14	2017-10-17 11:13:37.83778	2017-10-17 11:13:37.83778
+340	tinfoil_ETtlB	tinfoil_HlY97	tinfoil_gTA04	2017-10-17 11:13:39.172618	2017-10-17 11:13:39.172618
+341	tinfoil_ETtlB	tinfoil_HlY97	tinfoil_gTA04	2017-10-17 11:13:40.515422	2017-10-17 11:13:40.515422
+342	tinfoil_ETtlB	tinfoil_HlY97	tinfoil_gTA04	2017-10-17 11:13:41.817751	2017-10-17 11:13:41.817751
+343	tinfoil_ETtlB	tinfoil_HlY97	tinfoil_gTA04	2017-10-17 11:13:43.134146	2017-10-17 11:13:43.134146
+344	http://www.tinfoil-fake-site.com	tinfoil_Zmt23	tinfoil_oZd64	2017-10-17 11:13:44.458184	2017-10-17 11:13:44.458184
+345	tinfoil_JmtMnhttp://www.tinfoil-fake-site.com	tinfoil_Zmt23	tinfoil_oZd64	2017-10-17 11:13:45.851379	2017-10-17 11:13:45.851379
+346	tinfoil_xOrJo	tinfoil_TAC74	tinfoil_afA79	2017-10-17 11:13:49.788359	2017-10-17 11:13:49.788359
+347	tinfoil_xOrJo	tinfoil_TAC74	tinfoil_afA79	2017-10-17 11:13:51.12006	2017-10-17 11:13:51.12006
+348	tinfoil_xOrJo	tinfoil_TAC74	tinfoil_afA79	2017-10-17 11:13:52.43536	2017-10-17 11:13:52.43536
+349	tinfoil_xOrJo	tinfoil_TAC74	tinfoil_afA79	2017-10-17 11:13:53.751103	2017-10-17 11:13:53.751103
+350	tinfoil_AGfku	tinfoil_SUP14	http://www.tinfoil-fake-site.com	2017-10-17 11:13:55.16725	2017-10-17 11:13:55.16725
+351	tinfoil_AGfku	tinfoil_SUP14	tinfoil_puW09http://www.tinfoil-fake-site.com	2017-10-17 11:13:56.496121	2017-10-17 11:13:56.496121
+352	tinfoil_KASxI	http://www.tinfoil-fake-site.com	tinfoil_fIw28	2017-10-17 11:14:00.371461	2017-10-17 11:14:00.371461
+353	tinfoil_KASxI	tinfoil_BAC82http://www.tinfoil-fake-site.com	tinfoil_fIw28	2017-10-17 11:14:01.693707	2017-10-17 11:14:01.693707
+354	tinfoil_IGaUW	tinfoil_wWl80	tinfoil_bVf03	2017-10-17 11:14:05.725968	2017-10-17 11:14:05.725968
+355	tinfoil_IGaUW	tinfoil_wWl80	tinfoil_bVf03	2017-10-17 11:14:07.041791	2017-10-17 11:14:07.041791
+356	tinfoil_IGaUW	tinfoil_wWl80	tinfoil_bVf03	2017-10-17 11:14:08.355538	2017-10-17 11:14:08.355538
+357	tinfoil_IGaUW	tinfoil_wWl80	tinfoil_bVf03	2017-10-17 11:14:09.662855	2017-10-17 11:14:09.662855
+358	tinfoil_ekMOc	tinfoil_FtR54	tinfoil_DcH42	2017-10-17 11:14:10.984206	2017-10-17 11:14:10.984206
+359	tinfoil_ekMOc	tinfoil_FtR54	tinfoil_DcH42	2017-10-17 11:14:12.314418	2017-10-17 11:14:12.314418
+360	tinfoil_ekMOc	tinfoil_FtR54	tinfoil_DcH42	2017-10-17 11:14:13.629224	2017-10-17 11:14:13.629224
+361	tinfoil_ekMOc	tinfoil_FtR54	tinfoil_DcH42	2017-10-17 11:14:14.973475	2017-10-17 11:14:14.973475
+362	hTTp://www.tinfoil-fake-site.com	tinfoil_EtF96	tinfoil_OGd94	2017-10-17 11:14:16.361834	2017-10-17 11:14:16.361834
+363	tinfoil_HxyJIhTTp://www.tinfoil-fake-site.com	tinfoil_EtF96	tinfoil_OGd94	2017-10-17 11:14:17.684589	2017-10-17 11:14:17.684589
+364	tinfoil_ntMPp	tinfoil_hgM84	tinfoil_icr09	2017-10-17 11:14:22.147105	2017-10-17 11:14:22.147105
+365	tinfoil_ntMPp	tinfoil_hgM84	tinfoil_icr09	2017-10-17 11:14:23.553624	2017-10-17 11:14:23.553624
+366	tinfoil_ntMPp	tinfoil_hgM84	tinfoil_icr09	2017-10-17 11:14:25.011001	2017-10-17 11:14:25.011001
+367	tinfoil_ntMPp	tinfoil_hgM84	tinfoil_icr09	2017-10-17 11:14:26.391163	2017-10-17 11:14:26.391163
+368	tinfoil_kdvcZ	tinfoil_jUr52	hTTp://www.tinfoil-fake-site.com	2017-10-17 11:14:27.795215	2017-10-17 11:14:27.795215
+369	tinfoil_kdvcZ	tinfoil_jUr52	tinfoil_ytX92hTTp://www.tinfoil-fake-site.com	2017-10-17 11:14:29.184198	2017-10-17 11:14:29.184198
+370	tinfoil_zWcIn	hTTp://www.tinfoil-fake-site.com	tinfoil_vWP46	2017-10-17 11:14:33.261515	2017-10-17 11:14:33.261515
+371	tinfoil_zWcIn	tinfoil_EMT81hTTp://www.tinfoil-fake-site.com	tinfoil_vWP46	2017-10-17 11:14:34.621675	2017-10-17 11:14:34.621675
+372	tinfoil_yHMPz	tinfoil_Dvx90	tinfoil_yif23	2017-10-17 11:14:38.816426	2017-10-17 11:14:38.816426
+373	tinfoil_yHMPz	tinfoil_Dvx90	tinfoil_yif23	2017-10-17 11:14:40.274067	2017-10-17 11:14:40.274067
+374	tinfoil_yHMPz	tinfoil_Dvx90	tinfoil_yif23	2017-10-17 11:14:41.721073	2017-10-17 11:14:41.721073
+375	tinfoil_yHMPz	tinfoil_Dvx90	tinfoil_yif23	2017-10-17 11:14:43.111189	2017-10-17 11:14:43.111189
+376	tinfoil_ijsWQ	tinfoil_Mij10	tinfoil_jyS16	2017-10-17 11:14:44.46133	2017-10-17 11:14:44.46133
+377	tinfoil_ijsWQ	tinfoil_Mij10	tinfoil_jyS16	2017-10-17 11:14:45.890565	2017-10-17 11:14:45.890565
+378	tinfoil_ijsWQ	tinfoil_Mij10	tinfoil_jyS16	2017-10-17 11:14:47.345067	2017-10-17 11:14:47.345067
+379	tinfoil_ijsWQ	tinfoil_Mij10	tinfoil_jyS16	2017-10-17 11:14:48.753129	2017-10-17 11:14:48.753129
+380	HttP://www.tinfoil-fake-site.com	tinfoil_SJw63	tinfoil_eQT74	2017-10-17 11:14:50.147865	2017-10-17 11:14:50.147865
+381	tinfoil_CriwYHttP://www.tinfoil-fake-site.com	tinfoil_SJw63	tinfoil_eQT74	2017-10-17 11:14:51.523776	2017-10-17 11:14:51.523776
+382	tinfoil_TeSwg	tinfoil_tWM52	tinfoil_bXY32	2017-10-17 11:14:55.637274	2017-10-17 11:14:55.637274
+383	tinfoil_TeSwg	tinfoil_tWM52	tinfoil_bXY32	2017-10-17 11:14:56.971787	2017-10-17 11:14:56.971787
+384	tinfoil_TeSwg	tinfoil_tWM52	tinfoil_bXY32	2017-10-17 11:14:58.291586	2017-10-17 11:14:58.291586
+385	tinfoil_TeSwg	tinfoil_tWM52	tinfoil_bXY32	2017-10-17 11:14:59.632451	2017-10-17 11:14:59.632451
+386	tinfoil_eqLuM	tinfoil_CBW05	HttP://www.tinfoil-fake-site.com	2017-10-17 11:15:01.103418	2017-10-17 11:15:01.103418
+387	tinfoil_eqLuM	tinfoil_CBW05	tinfoil_phB08HttP://www.tinfoil-fake-site.com	2017-10-17 11:15:02.439931	2017-10-17 11:15:02.439931
+388	tinfoil_Kmtno	HttP://www.tinfoil-fake-site.com	tinfoil_iIQ24	2017-10-17 11:15:06.436733	2017-10-17 11:15:06.436733
+389	tinfoil_Kmtno	tinfoil_XNS79HttP://www.tinfoil-fake-site.com	tinfoil_iIQ24	2017-10-17 11:15:07.78969	2017-10-17 11:15:07.78969
+390	tinfoil_uUPJk	tinfoil_TKP72	tinfoil_abf81	2017-10-17 11:15:11.901443	2017-10-17 11:15:11.901443
+391	tinfoil_uUPJk	tinfoil_TKP72	tinfoil_abf81	2017-10-17 11:15:13.261373	2017-10-17 11:15:13.261373
+392	tinfoil_uUPJk	tinfoil_TKP72	tinfoil_abf81	2017-10-17 11:15:14.625788	2017-10-17 11:15:14.625788
+393	tinfoil_uUPJk	tinfoil_TKP72	tinfoil_abf81	2017-10-17 11:15:15.962569	2017-10-17 11:15:15.962569
+394	tinfoil_VFejb	tinfoil_Jib47	tinfoil_AEu32	2017-10-17 11:15:17.390741	2017-10-17 11:15:17.390741
+395	tinfoil_VFejb	tinfoil_Jib47	tinfoil_AEu32	2017-10-17 11:15:18.695943	2017-10-17 11:15:18.695943
+396	tinfoil_VFejb	tinfoil_Jib47	tinfoil_AEu32	2017-10-17 11:15:20.03027	2017-10-17 11:15:20.03027
+397	tinfoil_VFejb	tinfoil_Jib47	tinfoil_AEu32	2017-10-17 11:15:21.3966	2017-10-17 11:15:21.3966
+398	tinfoil-fake-site.com	tinfoil_RIT82	tinfoil_xEY83	2017-10-17 11:15:23.016256	2017-10-17 11:15:23.016256
+399	tinfoil_AfLWHtinfoil-fake-site.com	tinfoil_RIT82	tinfoil_xEY83	2017-10-17 11:15:24.388257	2017-10-17 11:15:24.388257
+400	tinfoil_jqgoP	tinfoil_QIw37	tinfoil_NIG75	2017-10-17 11:15:28.452376	2017-10-17 11:15:28.452376
+401	tinfoil_jqgoP	tinfoil_QIw37	tinfoil_NIG75	2017-10-17 11:15:29.799123	2017-10-17 11:15:29.799123
+402	tinfoil_jqgoP	tinfoil_QIw37	tinfoil_NIG75	2017-10-17 11:15:31.157759	2017-10-17 11:15:31.157759
+403	tinfoil_jqgoP	tinfoil_QIw37	tinfoil_NIG75	2017-10-17 11:15:32.524235	2017-10-17 11:15:32.524235
+404	tinfoil_WBAuJ	tinfoil_Wpb48	tinfoil-fake-site.com	2017-10-17 11:15:33.981434	2017-10-17 11:15:33.981434
+405	tinfoil_WBAuJ	tinfoil_Wpb48	tinfoil_xEL41tinfoil-fake-site.com	2017-10-17 11:15:35.344139	2017-10-17 11:15:35.344139
+406	tinfoil_srZQv	tinfoil-fake-site.com	tinfoil_AWE76	2017-10-17 11:15:39.264255	2017-10-17 11:15:39.264255
+407	tinfoil_srZQv	tinfoil_buU23tinfoil-fake-site.com	tinfoil_AWE76	2017-10-17 11:15:40.615955	2017-10-17 11:15:40.615955
+408	tinfoil_ZiRTC	tinfoil_RCT47	tinfoil_dhK38	2017-10-17 11:15:44.759964	2017-10-17 11:15:44.759964
+409	tinfoil_ZiRTC	tinfoil_RCT47	tinfoil_dhK38	2017-10-17 11:15:46.107135	2017-10-17 11:15:46.107135
+410	tinfoil_ZiRTC	tinfoil_RCT47	tinfoil_dhK38	2017-10-17 11:15:47.471837	2017-10-17 11:15:47.471837
+411	tinfoil_ZiRTC	tinfoil_RCT47	tinfoil_dhK38	2017-10-17 11:15:48.818928	2017-10-17 11:15:48.818928
+412	tinfoil_BnIvR	tinfoil_ztm75	tinfoil_Xcs03	2017-10-17 11:15:50.279337	2017-10-17 11:15:50.279337
+413	tinfoil_BnIvR	tinfoil_ztm75	tinfoil_Xcs03	2017-10-17 11:15:51.654991	2017-10-17 11:15:51.654991
+414	tinfoil_BnIvR	tinfoil_ztm75	tinfoil_Xcs03	2017-10-17 11:15:53.000244	2017-10-17 11:15:53.000244
+415	tinfoil_BnIvR	tinfoil_ztm75	tinfoil_Xcs03	2017-10-17 11:15:54.356669	2017-10-17 11:15:54.356669
+416	subdomain.tinfoil-fake-site.com	tinfoil_DpT52	tinfoil_ihp71	2017-10-17 11:15:55.699134	2017-10-17 11:15:55.699134
+417	tinfoil_mXTIysubdomain.tinfoil-fake-site.com	tinfoil_DpT52	tinfoil_ihp71	2017-10-17 11:15:57.096819	2017-10-17 11:15:57.096819
+418	tinfoil_nDygr	tinfoil_zok94	tinfoil_cZh76	2017-10-17 11:16:01.198976	2017-10-17 11:16:01.198976
+419	tinfoil_nDygr	tinfoil_zok94	tinfoil_cZh76	2017-10-17 11:16:02.547833	2017-10-17 11:16:02.547833
+420	tinfoil_nDygr	tinfoil_zok94	tinfoil_cZh76	2017-10-17 11:16:03.990188	2017-10-17 11:16:03.990188
+421	tinfoil_nDygr	tinfoil_zok94	tinfoil_cZh76	2017-10-17 11:16:05.350029	2017-10-17 11:16:05.350029
+422	tinfoil_GFLjx	tinfoil_tSg04	subdomain.tinfoil-fake-site.com	2017-10-17 11:16:06.715654	2017-10-17 11:16:06.715654
+423	tinfoil_GFLjx	tinfoil_tSg04	tinfoil_rIX80subdomain.tinfoil-fake-site.com	2017-10-17 11:16:08.085139	2017-10-17 11:16:08.085139
+424	tinfoil_dtXPS	subdomain.tinfoil-fake-site.com	tinfoil_iwt13	2017-10-17 11:16:12.16969	2017-10-17 11:16:12.16969
+425	tinfoil_dtXPS	tinfoil_GVB62subdomain.tinfoil-fake-site.com	tinfoil_iwt13	2017-10-17 11:16:13.529034	2017-10-17 11:16:13.529034
+426	Arunkumar 2017 Graduate	Comment : Not User friendly	Remove hiperlink and put text box while adding quotation such that if user selects some category then u need to disable text box or else enable that text box so that he can directly write category name and that will be user friendly.	2017-10-20 08:01:27.058003	2017-10-20 08:01:27.058003
+\.
+
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('quotations_id_seq', 426, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY schema_migrations (version) FROM stdin;
+20171011043620
+20171018144350
+20171020095521
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, role_id) FROM stdin;
+3	admin@web4.com	$2a$11$u5Ajq3m2WouPuIvQ/ZY9e.5X6nBTCVHhw.XlpSRuc04vmrXjTVUX2	\N	\N	\N	1	2017-10-23 09:46:26.875321	2017-10-23 09:46:26.875321	192.41.170.248	192.41.170.248	2017-10-23 09:46:26.839239	2017-10-23 09:46:26.877137	1
+2	1@1.com	$2a$11$SY7ZhPGViHQtB92aiTPyJOUN8O5.6g4FheNsJ.qhmAMNRP8hnGA32	\N	\N	\N	5	2017-10-23 09:48:44.43614	2017-10-23 09:37:52.802661	192.41.170.248	192.41.170.248	2017-10-23 09:23:12.15056	2017-10-23 09:48:44.438407	3
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('users_id_seq', 3, true);
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: quotations_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY quotations
+    ADD CONSTRAINT quotations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: deploy
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: deploy
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect ps3_test
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE ar_internal_metadata OWNER TO jenkins;
+
+--
+-- Name: quotations; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE quotations (
+    id bigint NOT NULL,
+    author_name character varying,
+    category character varying,
+    quote text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE quotations OWNER TO jenkins;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE; Schema: public; Owner: jenkins
+--
+
+CREATE SEQUENCE quotations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE quotations_id_seq OWNER TO jenkins;
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jenkins
+--
+
+ALTER SEQUENCE quotations_id_seq OWNED BY quotations.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO jenkins;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: jenkins
+--
+
+CREATE TABLE users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    role_id integer
+);
+
+
+ALTER TABLE users OWNER TO jenkins;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: jenkins
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO jenkins;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jenkins
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY quotations ALTER COLUMN id SET DEFAULT nextval('quotations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	development	2017-10-23 07:56:32.72143	2017-10-23 07:56:32.72143
+\.
+
+
+--
+-- Data for Name: quotations; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY quotations (id, author_name, category, quote, created_at, updated_at) FROM stdin;
+980190962	\N	\N	\N	2017-10-23 07:56:38.666145	2017-10-23 07:56:38.666145
+298486374	\N	\N	\N	2017-10-23 07:56:38.666145	2017-10-23 07:56:38.666145
+\.
+
+
+--
+-- Name: quotations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jenkins
+--
+
+SELECT pg_catalog.setval('quotations_id_seq', 980190962, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY schema_migrations (version) FROM stdin;
+20171022181925
+20171022174821
+20171022181205
+20171020095337
+20171018144350
+20171020095521
+20171022181921
+20171018163940
+20171011043620
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: jenkins
+--
+
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, role_id) FROM stdin;
+980190962			\N	\N	\N	0	\N	\N	\N	\N	2017-10-23 07:56:38.69146	2017-10-23 07:56:38.69146	\N
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jenkins
+--
+
+SELECT pg_catalog.setval('users_id_seq', 980190962, true);
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: quotations_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY quotations
+    ADD CONSTRAINT quotations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: jenkins
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: jenkins
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: jenkins
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\connect template1
+
+SET default_transaction_read_only = off;
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE template1 IS 'default template for new databases';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- PostgreSQL database cluster dump complete
+--
+

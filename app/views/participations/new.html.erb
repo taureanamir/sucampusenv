@@ -1,0 +1,23 @@
+
+
+<p>Please fill in your details before you click register !!!</p>
+
+
+<%= form_for @participation, url: {action: "create"} do |f| %>
+    <fieldset>
+      <%= f.label :first_name,"First Name" %><br />
+      <%= f.text_field :first_name %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :last_name,"Last Name" %><br />
+      <%= f.text_field :last_name %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :fos,"FOS" %><br />
+      <%= f.text_field :fos %>
+    </fieldset>
+    <%= f.submit "Register" , class: "btn btn-success"%>
+
+<% end %>
