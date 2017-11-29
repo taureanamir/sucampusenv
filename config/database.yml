@@ -80,13 +80,13 @@ test: &test
 #
 production:
   <<: *default
-  host: ec2-54-221-246-84.compute-1.amazonaws.com
-  database: dccp6j7qitqeif
-  username: ujeseshyrysknl
+  host: ec2-54-235-65-224.compute-1.amazonaws.com
+  database: dctcusrai5mtfd
+  username: hdmemprbduqzln
   port: 5432
-  password: c712fdcb5030e9b041e86a349362cc2d447b1a5a57bd57d7a6506ebe715b8899
-  uri: postgres://ujeseshyrysknl:c712fdcb5030e9b041e86a349362cc2d447b1a5a57bd57d7a6506ebe715b8899@ec2-54-221-246-84.compute-1.amazonaws.com:5432/dccp6j7qitqeif
-  heroku cli: heroku pg:psql postgresql-colorful-93644 --app sucampusenv
+  password: 60e86a9f87ebddc58dd6891ed521916198fe1b67c87b29c17d1b08f8d67cb7c2
+  uri: postgres://hdmemprbduqzln:60e86a9f87ebddc58dd6891ed521916198fe1b67c87b29c17d1b08f8d67cb7c2@ec2-54-235-65-224.compute-1.amazonaws.com:5432/dctcusrai5mtfd
+  heroku cli: heroku pg:psql postgresql-amorphous-42374 --app sucampusenv
 
 cucumber:
   <<: *test
