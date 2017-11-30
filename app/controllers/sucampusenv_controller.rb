@@ -1,38 +1,10 @@
 class SucampusenvController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :db_dump_ps4 , :doc ,:ps5_doc , :jenkins_mail, :references, :events, :home, :ps6_doc, :suggestions]
+  before_action :authenticate_user!, except: [:events, :home]
   before_action :assign_member
 
   def home
 
   end
-
-
-  def doc
-  end
-
-  def show
-  end
-
-  def jenkins_mail
-  end
-
-  def references
-  end
-
-  def ps5_doc
-  end
-
-  def ps6_doc
-  end
-
-  def db_dump_ps4
-    #send_file("#{Rails.root}/pgdump_ps4.txt", type: "application/txt", x_sendfile: true)
-  end
-
-  def suggestions
-    #send_file("#{Rails.root}/public/suggestions.txt", type: "application/txt", x_sendfile: true)
-  end
-
 
   def participants_list
     if current_user.role_id == 1
@@ -45,7 +17,7 @@ class SucampusenvController < ApplicationController
               on a.event_id = c.id
               where c.title = '#{params[:event]}';")
     else
-      render  :show
+      render  :home
     end
   end
 

@@ -15,16 +15,5 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create user" do
-    assert_difference('Event.count', 0) do
-      post events_url, params: { event: { title: @event.title,
-                                          description: @event.description,
-                                          event_date: @event.event_date,
-                                          event_time: @event.event_time,
-                                          contact: @event.contact} }
-    end
-    assert_redirected_to events_path
-  end
-
 
 end

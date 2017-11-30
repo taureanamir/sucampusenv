@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   #PS4
   get 'sucampusenv/doc'
-  get 'sucampusenv/show'
   root 'sucampusenv#home'
 
 

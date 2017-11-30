@@ -13,7 +13,7 @@ class SucampusenvControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "unthenticated users should not see participents list" do
+  test "unthenticated users should not see participants list" do
     sign_in(users(:two))
     get sucampusenv_participants_list_path
     assert_response :success
