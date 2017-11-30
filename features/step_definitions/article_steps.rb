@@ -93,7 +93,8 @@ end
 
 Then(/^I should be able to approve or reject it$/) do
   visit sucampusenv_articles_list_path
-  find_link('Approve').click
+  #find_link('Approve').click
+  click_link('Approve', match: :first)
 end
 
 When(/^I click approve I should be able to get the approval notice$/) do
@@ -102,7 +103,8 @@ end
 
 When(/^when I click reject I should be able to get the reject notice$/) do
   visit sucampusenv_articles_list_path
-  find_link('Reject').click
+  #find_link('Reject').click
+  click_link('Reject', match: :first)
   expect(page).to have_content('Article rejected !!!')
 end
 

@@ -10,7 +10,10 @@ When(/^I visit the participants list page$/) do
   check('event_is_publised')
   click_button 'Add'
   visit events_path
-  find(".list-group-item").click
+  #save_and_open_page
+  #find(".list-group-item").click
+  click_link(@event.title, match: :first)
+  #save_and_open_page
   click_link 'Register'
   fill_in ('First Name'), :with => 'Thierry'
   fill_in ('Last Name'), :with => 'Henry'

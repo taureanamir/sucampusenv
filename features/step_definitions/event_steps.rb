@@ -1,7 +1,8 @@
 Then(/^I click on event I want to register$/) do
   @event = FactoryGirl.create :event
   visit events_path
-  find(".list-group-item").click
+  #find(".list-group-item").click
+  click_link(@event.title, match: :first)
 end
 
 When(/^I click Register$/) do

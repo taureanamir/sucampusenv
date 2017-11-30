@@ -9,9 +9,11 @@ end
 
 
 When(/^I click on an event$/) do
-  find(".list-group-item").click
+  #find(".list-group-item").click
   #find_link(@event.title).click
+  click_link(@event.title, match: :first)
 end
+
 
 Then(/^I see the event details$/) do
   expect(page).to have_content (@event.title)

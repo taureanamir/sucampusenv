@@ -12,8 +12,9 @@ Then(/^I should see the events announced$/) do
 end
 
 When(/^I click an event$/) do
-  find(".list-group-item").click
+  #find(".list-group-item").click
   #find_link(@event.title).click
+  click_link(@event.title, match: :first)
 end
 
 Then(/^I should see the event details$/) do

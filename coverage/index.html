@@ -14,27 +14,27 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2017-11-30T16:49:49+05:45">2017-11-30T16:49:49+05:45</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2017-11-30T17:50:32+05:45">2017-11-30T17:50:32+05:45</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="yellow">89.31%</span></span>
+    (<span class="covered_percent"><span class="yellow">89.11%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         1.18
+         1.19
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>54</b> files in total.
-    <b>524</b> relevant lines. 
-    <span class="green"><b>468</b> lines covered</span> and
-    <span class="red"><b>56</b> lines missed </span>
+    <b>505</b> relevant lines. 
+    <span class="green"><b>450</b> lines covered</span> and
+    <span class="red"><b>55</b> lines missed </span>
   </div>
   <table class="file_list">
     <thead>
@@ -92,12 +92,12 @@
       
       <tr>
         <td class="strong"><a href="#8d8dd1063196c0348ce2dd5655d4dce3ca207f4f" class="src_link" title="app/controllers/sucampusenv_controller.rb">app/controllers/sucampusenv_controller.rb</a></td>
-        <td class="green strong">96.67 %</td>
-        <td>83</td>
-        <td>30</td>
-        <td>29</td>
+        <td class="green strong">95.45 %</td>
+        <td>55</td>
+        <td>22</td>
+        <td>21</td>
         <td>1</td>
-        <td>1.4</td>
+        <td>1.6</td>
       </tr>
       
       <tr>
@@ -423,9 +423,9 @@
       <tr>
         <td class="strong"><a href="#1be49c7f12711974aca94f630f0827e4ecd2a8ba" class="src_link" title="config/routes.rb">config/routes.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>41</td>
-        <td>27</td>
-        <td>27</td>
+        <td>35</td>
+        <td>20</td>
+        <td>20</td>
         <td>0</td>
         <td>1.0</td>
       </tr>
@@ -512,12 +512,12 @@
       
       <tr>
         <td class="strong"><a href="#ae9098fc8f88b303a389eb22ecd7805341306a0c" class="src_link" title="test/controllers/users_controller_test.rb">test/controllers/users_controller_test.rb</a></td>
-        <td class="green strong">93.33 %</td>
-        <td>30</td>
-        <td>15</td>
-        <td>14</td>
-        <td>1</td>
-        <td>0.9</td>
+        <td class="green strong">100.0 %</td>
+        <td>19</td>
+        <td>11</td>
+        <td>11</td>
+        <td>0</td>
+        <td>1.0</td>
       </tr>
       
       <tr>
@@ -2065,10 +2065,10 @@
         <div class="source_table" id="8d8dd1063196c0348ce2dd5655d4dce3ca207f4f">
   <div class="header">
     <h3>app/controllers/sucampusenv_controller.rb</h3>
-    <h4><span class="green">96.67 %</span> covered</h4>
+    <h4><span class="green">95.45 %</span> covered</h4>
     <div>
-      <b>30</b> relevant lines. 
-      <span class="green"><b>29</b> lines covered</span> and
+      <b>22</b> relevant lines. 
+      <span class="green"><b>21</b> lines covered</span> and
       <span class="red"><b>1</b> lines missed.</span>
     </div>
   </div>
@@ -2085,7 +2085,7 @@
         <li class="covered" data-hits="1" data-linenumber="2">
           <span class="hits">1</span>
           
-          <code class="ruby">  before_action :authenticate_user!, except: [:show, :db_dump_ps4 , :doc ,:ps5_doc , :jenkins_mail, :references, :events, :home, :ps6_doc, :suggestions]</code>
+          <code class="ruby">  before_action :authenticate_user!, except: [:events, :home]</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="3">
@@ -2124,130 +2124,130 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="9">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="10">
+        <li class="covered" data-hits="1" data-linenumber="9">
           <span class="hits">1</span>
           
-          <code class="ruby">  def doc</code>
+          <code class="ruby">  def participants_list</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="11">
+        <li class="covered" data-hits="2" data-linenumber="10">
+          <span class="hits">2</span>
           
+          <code class="ruby">    if current_user.role_id == 1</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="11">
+          <span class="hits">1</span>
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      @all_participants = Participation.find_by_sql(&quot;select b.first_name, b.last_name, b.degree, b.fos, b.batch, c.title, c.event_date, c.venue from participations a</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="12">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">              inner join</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="13">
           
-          <code class="ruby">  def show</code>
+          
+          <code class="ruby">              users b</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="14">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">              on a.user_id = b.id</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="15">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">              inner join</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="16">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="16">
           
-          <code class="ruby">  def jenkins_mail</code>
+          
+          <code class="ruby">              events c</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="17">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">              on a.event_id = c.id</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="18">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">              where c.title = &#39;#{params[:event]}&#39;;&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="19">
+        <li class="never" data-hits="" data-linenumber="19">
+          
+          
+          <code class="ruby">    else</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="20">
           <span class="hits">1</span>
           
-          <code class="ruby">  def references</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="20">
-          
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">      render  :home</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="21">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="22">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="22">
           
-          <code class="ruby">  def ps5_doc</code>
+          
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
           
           
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="24">
-          
-          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="25">
+        <li class="covered" data-hits="1" data-linenumber="24">
           <span class="hits">1</span>
           
-          <code class="ruby">  def ps6_doc</code>
+          <code class="ruby">  def articles_list</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="26">
+        <li class="covered" data-hits="2" data-linenumber="25">
+          <span class="hits">2</span>
           
+          <code class="ruby">    if current_user.role_id == 1</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="26">
+          <span class="hits">1</span>
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      @articles = Article.all.order(updated_at: :desc)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="27">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    else</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="28">
           <span class="hits">1</span>
           
-          <code class="ruby">  def db_dump_ps4</code>
+          <code class="ruby">      redirect_to articles_path</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="29">
           
           
-          <code class="ruby">    #send_file(&quot;#{Rails.root}/pgdump_ps4.txt&quot;, type: &quot;application/txt&quot;, x_sendfile: true)</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="30">
@@ -2265,13 +2265,13 @@
         <li class="covered" data-hits="1" data-linenumber="32">
           <span class="hits">1</span>
           
-          <code class="ruby">  def suggestions</code>
+          <code class="ruby">  def my_articles</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="33">
+        <li class="covered" data-hits="1" data-linenumber="33">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    #send_file(&quot;#{Rails.root}/public/suggestions.txt&quot;, type: &quot;application/txt&quot;, x_sendfile: true)</code>
+          <code class="ruby">      @my_articles = Article.where(user_id: current_user.id).order(&quot;updated_at DESC&quot;)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="34">
@@ -2286,289 +2286,121 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="36">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="37">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  def participants_list</code>
-        </li>
-      
-        <li class="covered" data-hits="2" data-linenumber="38">
-          <span class="hits">2</span>
-          
-          <code class="ruby">    if current_user.role_id == 1</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="39">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      @all_participants = Participation.find_by_sql(&quot;select b.first_name, b.last_name, b.degree, b.fos, b.batch, c.title, c.event_date, c.venue from participations a</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="40">
-          
-          
-          <code class="ruby">              inner join</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="41">
-          
-          
-          <code class="ruby">              users b</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="42">
-          
-          
-          <code class="ruby">              on a.user_id = b.id</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="43">
-          
-          
-          <code class="ruby">              inner join</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="44">
-          
-          
-          <code class="ruby">              events c</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="45">
-          
-          
-          <code class="ruby">              on a.event_id = c.id</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="46">
-          
-          
-          <code class="ruby">              where c.title = &#39;#{params[:event]}&#39;;&quot;)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="47">
-          
-          
-          <code class="ruby">    else</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="48">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      render  :show</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="49">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="50">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="51">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="52">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  def articles_list</code>
-        </li>
-      
-        <li class="covered" data-hits="2" data-linenumber="53">
-          <span class="hits">2</span>
-          
-          <code class="ruby">    if current_user.role_id == 1</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="54">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      @articles = Article.all.order(updated_at: :desc)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="55">
-          
-          
-          <code class="ruby">    else</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="56">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      redirect_to articles_path</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="57">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="58">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="59">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="60">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  def my_articles</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="61">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      @my_articles = Article.where(user_id: current_user.id).order(&quot;updated_at DESC&quot;)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="62">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="63">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="64">
+        <li class="covered" data-hits="1" data-linenumber="36">
           <span class="hits">1</span>
           
           <code class="ruby">  private</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="65">
+        <li class="never" data-hits="" data-linenumber="37">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="66">
+        <li class="never" data-hits="" data-linenumber="38">
           
           
           <code class="ruby">  # Use callbacks to share common setup or constraints between actions.</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="67">
+        <li class="covered" data-hits="1" data-linenumber="39">
           <span class="hits">1</span>
           
           <code class="ruby">  def set_member</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="68">
+        <li class="missed" data-hits="0" data-linenumber="40">
           
           
           <code class="ruby">    @member = User.find(params[:id])</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="69">
+        <li class="never" data-hits="" data-linenumber="41">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="70">
+        <li class="never" data-hits="" data-linenumber="42">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="71">
+        <li class="never" data-hits="" data-linenumber="43">
           
           
           <code class="ruby">  # Never trust parameters from the scary internet, only allow the white list through.</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="72">
+        <li class="never" data-hits="" data-linenumber="44">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="73">
+        <li class="covered" data-hits="1" data-linenumber="45">
           <span class="hits">1</span>
           
           <code class="ruby">  def assign_member</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="74">
+        <li class="covered" data-hits="6" data-linenumber="46">
           <span class="hits">6</span>
           
           <code class="ruby">    if user_signed_in?</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="75">
+        <li class="covered" data-hits="5" data-linenumber="47">
           <span class="hits">5</span>
           
           <code class="ruby">      if current_user.role_id == 1</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="76">
+        <li class="covered" data-hits="2" data-linenumber="48">
           <span class="hits">2</span>
           
           <code class="ruby">        @is_admin = 1</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="77">
+        <li class="never" data-hits="" data-linenumber="49">
           
           
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="78">
+        <li class="covered" data-hits="3" data-linenumber="50">
           <span class="hits">3</span>
           
           <code class="ruby">        @is_admin = 0</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="79">
+        <li class="never" data-hits="" data-linenumber="51">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="80">
+        <li class="never" data-hits="" data-linenumber="52">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="81">
+        <li class="never" data-hits="" data-linenumber="53">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="82">
+        <li class="never" data-hits="" data-linenumber="54">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="83">
+        <li class="never" data-hits="" data-linenumber="55">
           
           
           <code class="ruby">end</code>
@@ -7038,8 +6870,8 @@
     <h3>config/routes.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>27</b> relevant lines. 
-      <span class="green"><b>27</b> lines covered</span> and
+      <b>20</b> relevant lines. 
+      <span class="green"><b>20</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -7128,166 +6960,130 @@
         <li class="covered" data-hits="1" data-linenumber="14">
           <span class="hits">1</span>
           
-          <code class="ruby">  get &#39;/sucampusenv/ps6_doc&#39;</code>
+          <code class="ruby">  get &#39;sucampusenv/home&#39;</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="15">
           <span class="hits">1</span>
           
-          <code class="ruby">  get &#39;suggestions&#39;, to: &quot;sucampusenv#suggestions&quot;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="16">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  get &#39;sucampusenv/ps5_doc&#39;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="17">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  get &#39;sucampusenv/home&#39;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="18">
-          <span class="hits">1</span>
-          
           <code class="ruby">  devise_for :users, :controllers =&gt; { registrations: &#39;registrations&#39; }</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="19">
+        <li class="never" data-hits="" data-linenumber="16">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="20">
+        <li class="never" data-hits="" data-linenumber="17">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="21">
+        <li class="never" data-hits="" data-linenumber="18">
           
           
           <code class="ruby">  #PS4</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="22">
+        <li class="covered" data-hits="1" data-linenumber="19">
           <span class="hits">1</span>
           
           <code class="ruby">  get &#39;sucampusenv/doc&#39;</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="23">
+        <li class="covered" data-hits="1" data-linenumber="20">
           <span class="hits">1</span>
           
-          <code class="ruby">  get &#39;sucampusenv/show&#39;</code>
+          <code class="ruby">  root &#39;sucampusenv#home&#39;</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="24">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  root &#39;sucampusenv#show&#39;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="25">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  get &#39;/sucampusenv/jenkins_mail&#39;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="26">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  get &#39;/sucampusenv/references&#39;</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="27">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  get &#39;db_dump_ps4&#39;, to: &quot;sucampusenv#db_dump_ps4&quot;</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="28">
+        <li class="never" data-hits="" data-linenumber="21">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="29">
+        <li class="never" data-hits="" data-linenumber="22">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="23">
           <span class="hits">1</span>
           
           <code class="ruby">  devise_scope :user do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="30">
+        <li class="covered" data-hits="1" data-linenumber="24">
           <span class="hits">1</span>
           
           <code class="ruby">    authenticated :user do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="31">
+        <li class="covered" data-hits="1" data-linenumber="25">
           <span class="hits">1</span>
           
           <code class="ruby">      root &#39;sucampusenv#home&#39;, as: :authenticated_root</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="32">
+        <li class="never" data-hits="" data-linenumber="26">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="33">
+        <li class="covered" data-hits="1" data-linenumber="27">
           <span class="hits">1</span>
           
           <code class="ruby">    unauthenticated do</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="34">
+        <li class="covered" data-hits="1" data-linenumber="28">
           <span class="hits">1</span>
           
           <code class="ruby">      root &#39;sucampusenv#home&#39;, as: :unauthenticated_root</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="35">
+        <li class="never" data-hits="" data-linenumber="29">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="36">
+        <li class="never" data-hits="" data-linenumber="30">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="37">
+        <li class="never" data-hits="" data-linenumber="31">
           
           
           <code class="ruby">  #devise_for :users</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="38">
+        <li class="never" data-hits="" data-linenumber="32">
           
           
           <code class="ruby">  #resources :sucampusenv</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="39">
+        <li class="covered" data-hits="1" data-linenumber="33">
           <span class="hits">1</span>
           
           <code class="ruby">  resources :users</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="40">
+        <li class="covered" data-hits="1" data-linenumber="34">
           <span class="hits">1</span>
           
           <code class="ruby">  get &#39;sucampusenv/participants_list&#39;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="41">
+        <li class="never" data-hits="" data-linenumber="35">
           
           
           <code class="ruby">end</code>
@@ -8912,7 +8708,7 @@
         <li class="covered" data-hits="1" data-linenumber="16">
           <span class="hits">1</span>
           
-          <code class="ruby">  test &quot;unthenticated users should not see participents list&quot; do</code>
+          <code class="ruby">  test &quot;unthenticated users should not see participants list&quot; do</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="17">
@@ -9091,11 +8887,11 @@
         <div class="source_table" id="ae9098fc8f88b303a389eb22ecd7805341306a0c">
   <div class="header">
     <h3>test/controllers/users_controller_test.rb</h3>
-    <h4><span class="green">93.33 %</span> covered</h4>
+    <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>15</b> relevant lines. 
-      <span class="green"><b>14</b> lines covered</span> and
-      <span class="red"><b>1</b> lines missed.</span>
+      <b>11</b> relevant lines. 
+      <span class="green"><b>11</b> lines covered</span> and
+      <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
   
@@ -9204,79 +9000,13 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="18">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  test &quot;should create user&quot; do</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="19">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    assert_difference(&#39;Event.count&#39;, 0) do</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="20">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      post events_url, params: { event: { title: @event.title,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="21">
-          
-          
-          <code class="ruby">                                          description: @event.description,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="22">
-          
-          
-          <code class="ruby">                                          event_date: @event.event_date,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="23">
-          
-          
-          <code class="ruby">                                          event_time: @event.event_time,</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="24">
-          
-          
-          <code class="ruby">                                          contact: @event.contact} }</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="25">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="26">
-          
-          
-          <code class="ruby">    assert_redirected_to events_path</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="27">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="28">
+        <li class="never" data-hits="" data-linenumber="18">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="29">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="30">
+        <li class="never" data-hits="" data-linenumber="19">
           
           
           <code class="ruby">end</code>

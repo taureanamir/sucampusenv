@@ -48,11 +48,12 @@ Then(/^I should see list of events$/) do
 end
 
 When(/^I click the event$/) do
-  find(".list-group-item").click
+  #find(".list-group-item").click
+  click_link(@event.title, match: :first)
 end
 
 Then(/^I should see edit button$/) do
- find_link('Edit')
+  find_link('Edit')
 end
 
 When(/^I click the edit button$/) do
@@ -80,7 +81,8 @@ Then(/^I want see the event list$/) do
 end
 
 When(/^I click on an event that i want to delete$/) do
-  find(".list-group-item").click
+  #find(".list-group-item").click
+  click_link(@event.title, match: :first)
 end
 
 Then(/^I see the event information$/) do

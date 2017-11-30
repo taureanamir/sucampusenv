@@ -60,7 +60,7 @@ FactoryGirl.define do
   factory :new_event, class: Event do
     title "Discussion board on clean envirnoment"
     description "The event will be arranged for all AITians"
-    event_date "2017-11-29"
+    event_date "2017-12-02"
     event_time "1:00 PM"
     contact "+66123456"
     venue "AITCC"
