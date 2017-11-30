@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.4.1'
+
 gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
@@ -27,6 +27,7 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'figaro'
 gem "simple_calendar", "~> 2.0"
+gem 'rails-controller-testing'
 
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'

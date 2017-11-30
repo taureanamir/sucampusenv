@@ -2,8 +2,8 @@
 
 one:
   content: Comment on event1
-  user_id: users(one).id
-  event_id: events(one).id
+  user_id: 1
+  event_id: 1
 
 two:
   content: Comment on event2

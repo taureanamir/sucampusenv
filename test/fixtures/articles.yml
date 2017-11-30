@@ -5,9 +5,11 @@ one:
   content: Article Content
   uploaded_date: 2017-11-01
   is_published: true
+  user_id: 1
 
 two:
   title: Title2
   content: Content 2
   uploaded_date: 2017-11-01
   is_published: false
+  user_id: 2

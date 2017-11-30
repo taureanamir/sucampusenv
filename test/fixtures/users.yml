@@ -13,3 +13,11 @@ two:
   first_name: "Fname2"
   last_name: "Lname2"
   role_id: 2
+
+three:
+  id: 3
+  email: "email3@hotmail.com"
+  encrypted_password: "$2a$10$ZU0x7nDXA1EKbUAjwKTCwegV/yfddZkvfKWEa9/arb5pBQuy/1oFu"
+  first_name: "Fname3"
+  last_name: "Lname3"
+  role_id: 3

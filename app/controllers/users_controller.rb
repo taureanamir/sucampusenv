@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index, :show, :banned?]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   #before_action :only_see_own_page
 
@@ -74,6 +74,14 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html {redirect_to users_url, notice: 'User was successfully destroyed.'}
       format.json {head :no_content}
+    end
+  end
+
+  def banned?
+    if current_user.present? && current_user.role_id == 3
+      sign_out current_user
+      flash[:error] = "Your account has been suspended !!!"
+      sucampusenv_home_path
     end
   end
 
