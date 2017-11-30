@@ -1,6 +1,10 @@
 <h2><%= @article.title %></h2>
 <p><i>Author: <b><%= @article.user.email %></b></i></p>
 <p><i><%= @article.updated_at %> </i></p>
+<%= @article.score %> Likes
+<%=	 link_to image_tag("like.png"), like_article_path(@article), method: :put %>
+<%=  link_to image_tag("dislike.png"), dislike_article_path(@article), method: :put %>
+<hr>
 
 <p> <%= @article.content %> </p>
 

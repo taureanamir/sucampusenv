@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-  resources :articles
+  resources :articles do
+    member do
+      put "like", to: "articles#upvote"
+      put "dislike", to: "articles#downvote"
+    end
+  end
+
   resources :pages
   get 'sucampusenv/articles_list'
   get 'sucampusenv/my_articles'
@@ -13,10 +19,6 @@ Rails.application.routes.draw do
 
   get 'sucampusenv/home'
   devise_for :users, :controllers => { registrations: 'registrations' }
-
-
-  #PS4
-  get 'sucampusenv/doc'
   root 'sucampusenv#home'
 
 

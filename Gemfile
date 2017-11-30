@@ -28,6 +28,7 @@ gem 'omniauth-google-oauth2'
 gem 'figaro'
 gem "simple_calendar", "~> 2.0"
 gem 'rails-controller-testing'
+gem 'acts_as_votable'
 
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'

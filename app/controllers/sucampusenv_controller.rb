@@ -2,20 +2,23 @@ class SucampusenvController < ApplicationController
   before_action :authenticate_user!, except: [:events, :home]
   before_action :assign_member
 
+
+
   def home
 
   end
 
   def participants_list
     if current_user.role_id == 1
-      @all_participants = Participation.find_by_sql("select b.first_name, b.last_name, b.degree, b.fos, b.batch, c.title, c.event_date, c.venue from participations a
+      query = Participation.escape_sql(["select b.first_name, b.last_name, b.degree, b.fos, b.batch, c.title, c.event_date, c.venue, c.title from participations a
               inner join
               users b
               on a.user_id = b.id
               inner join
               events c
               on a.event_id = c.id
-              where c.title = '#{params[:event]}';")
+              where c.title = '#{params[:event]}';"])
+      @all_participants = Participation.find_by_sql(query)
     else
       render  :home
     end

@@ -10,21 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118090537) do
+ActiveRecord::Schema.define(version: 20171130151753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "answers", force: :cascade do |t|
+    t.text "answer"
+    t.boolean "disallowed"
+    t.bigint "user_id"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "content"
-    t.date "uploaded_date", default: "2017-11-18"
+    t.date "uploaded_date", default: "2017-11-17"
     t.boolean "is_published", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.string "status", default: "Being Reviewed"
     t.index ["user_id"], name: "index_articles_on_user_id"
+  end
+
+  create_table "ckeditor_assets", force: :cascade do |t|
+    t.string "data_file_name", null: false
+    t.string "data_content_type"
+    t.integer "data_file_size"
+    t.string "data_fingerprint"
+    t.string "type", limit: 30
+    t.integer "width"
+    t.integer "height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_ckeditor_assets_on_type"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -71,6 +95,17 @@ ActiveRecord::Schema.define(version: 20171118090537) do
     t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.text "question"
+    t.boolean "disallowed", default: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "answer_id"
+    t.index ["answer_id"], name: "index_questions_on_answer_id"
+    t.index ["user_id"], name: "index_questions_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "role"
     t.string "role_id"
@@ -101,9 +136,27 @@ ActiveRecord::Schema.define(version: 20171118090537) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", id: :serial, force: :cascade do |t|
+    t.string "votable_type"
+    t.integer "votable_id"
+    t.string "voter_type"
+    t.integer "voter_id"
+    t.boolean "vote_flag"
+    t.string "vote_scope"
+    t.integer "vote_weight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+    t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
+  end
+
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users"
   add_foreign_key "articles", "users"
   add_foreign_key "comments", "events"
   add_foreign_key "comments", "users"
   add_foreign_key "participations", "events"
   add_foreign_key "participations", "users"
+  add_foreign_key "questions", "answers"
+  add_foreign_key "questions", "users"
 end
