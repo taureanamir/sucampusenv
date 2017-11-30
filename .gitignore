@@ -15,8 +15,6 @@
 
 /node_modules
 /yarn-error.log
-/config/secrets.yml
-/config/database.yml
 /config/application.yml
 /config/environments/development.rb
 
